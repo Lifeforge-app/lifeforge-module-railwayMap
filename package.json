@@ -1,0 +1,16 @@
+{
+  "name": "railway-map",
+  "version": "dev. 25w41",
+  "description": "The ultimate map for MRT and LRT in Malaysia and Singapore",
+  "scripts": {
+    "types": "cd client && bun tsc && cd ../server && bun tsc"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/leaflet": "^1.9.20"
+  }
+}
