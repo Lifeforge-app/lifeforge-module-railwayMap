@@ -8,7 +8,7 @@ import {
   useRef,
   useState
 } from 'react'
-import { Outlet } from 'react-router'
+import { Outlet } from 'shared'
 import type { InferOutput } from 'shared'
 
 export type RailwayMapStation = InferOutput<
