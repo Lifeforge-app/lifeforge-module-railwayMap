@@ -6,7 +6,7 @@ export default {
   icon: 'uil:subway',
   provider: lazy(() => import('@/providers/RailwayMapProvider')),
   routes: {
-    '': lazy(() => import('@'))
+    '/': lazy(() => import('@'))
   },
   category: 'Information'
 } satisfies ModuleConfig
