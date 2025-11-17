@@ -6,7 +6,12 @@ import dijkstraWithTransfers from './utils/pathFinding'
 
 const getLines = forgeController
   .query()
-  .description('Get all railway lines')
+  .description({
+    en: 'Get all railway lines',
+    ms: 'Dapatkan semua laluan kereta api',
+    'zh-CN': '获取所有铁路线路',
+    'zh-TW': '獲取所有鐵路線路'
+  })
   .input({})
   .callback(({ pb }) =>
     pb.getFullList.collection('railway_map__lines').execute()
@@ -14,7 +19,12 @@ const getLines = forgeController
 
 const getStations = forgeController
   .query()
-  .description('Get all railway stations')
+  .description({
+    en: 'Get all railway stations',
+    ms: 'Dapatkan semua stesen kereta api',
+    'zh-CN': '获取所有火车站',
+    'zh-TW': '獲取所有火車站'
+  })
   .input({})
   .callback(({ pb }) =>
     pb.getFullList.collection('railway_map__stations').execute()
@@ -22,7 +32,12 @@ const getStations = forgeController
 
 const getShortestPath = forgeController
   .query()
-  .description('Get shortest path between two stations')
+  .description({
+    en: 'Calculate shortest route between stations',
+    ms: 'Kira laluan terpendek antara stesen',
+    'zh-CN': '计算站点之间的最短路线',
+    'zh-TW': '計算站點之間的最短路線'
+  })
   .input({
     query: z.object({
       start: z.string(),
