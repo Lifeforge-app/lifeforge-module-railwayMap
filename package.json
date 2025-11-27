@@ -13,6 +13,8 @@
     "d3": "^7.9.0",
     "leaflet": "^1.9.4",
     "lifeforge-ui": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-i18next": "^15.1.1",
     "react-toastify": "^11.0.5",
     "shared": "workspace:*",
@@ -22,6 +24,8 @@
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",
-    "@types/leaflet": "^1.9.20"
+    "@types/leaflet": "^1.9.20",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3"
   }
 }
