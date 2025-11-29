@@ -34,9 +34,9 @@ function StationSelector({
       icon={icon}
       label={name}
       namespace={namespace}
-      setQuery={setQuery}
-      setValue={setValue}
       value={value}
+      onChange={setValue}
+      onQueryChanged={setQuery}
     >
       {filteredStations.map(station => (
         <ComboboxOption

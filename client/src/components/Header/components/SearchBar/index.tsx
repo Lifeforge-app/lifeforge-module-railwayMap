@@ -23,7 +23,7 @@ function SearchBar() {
       <SearchInput
         namespace="apps.railwayMap"
         searchTarget="station"
-        setValue={setSearchQuery}
+        onChange={setSearchQuery}
         value={searchQuery}
       />
       {searchQuery.length > 0 && (
@@ -44,8 +44,10 @@ function SearchBar() {
                   <EmptyStateScreen
                     smaller
                     icon="tabler:search-off"
-                    name="search"
-                    namespace="apps.railwayMap"
+                    message={{
+                      id: 'search',
+                      namespace: 'apps.railwayMap'
+                    }}
                   />
                 </div>
               )}

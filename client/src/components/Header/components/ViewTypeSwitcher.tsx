@@ -38,10 +38,10 @@ function ViewTypeSwitcher({ viewType, setViewType }: ViewTypeSwitcherProps) {
         </div>
       }
       className="component-bg-with-hover! hidden max-w-64 lg:flex"
-      setValue={value => {
+      value={viewType}
+      onChange={value => {
         setViewType(value)
       }}
-      value={viewType}
     >
       {VIEW_TYPES.map(([icon, name, value]) => (
         <ListboxOption
