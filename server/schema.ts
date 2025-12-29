@@ -12,7 +12,6 @@ const railwayMapSchemas = {
       map_paths: z.any()
     }),
     raw: {
-      id: 'pbc_1897454554',
       listRule: '@request.auth.id != ""',
       viewRule: '@request.auth.id != ""',
       createRule: '@request.auth.id != ""',
@@ -24,7 +23,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '[a-z0-9]{15}',
           hidden: false,
-          id: 'text3208210256',
           max: 15,
           min: 15,
           name: 'id',
@@ -38,7 +36,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text1400097126',
           max: 0,
           min: 0,
           name: 'country',
@@ -52,7 +49,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text2363381545',
           max: 0,
           min: 0,
           name: 'type',
@@ -66,7 +62,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text1997877400',
           max: 0,
           min: 0,
           name: 'code',
@@ -80,7 +75,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text1579384326',
           max: 0,
           min: 0,
           name: 'name',
@@ -94,7 +88,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text1716930793',
           max: 0,
           min: 0,
           name: 'color',
@@ -107,7 +100,6 @@ const railwayMapSchemas = {
         },
         {
           hidden: false,
-          id: 'json2840069143',
           maxSize: 0,
           name: 'ways',
           presentable: false,
@@ -117,7 +109,6 @@ const railwayMapSchemas = {
         },
         {
           hidden: false,
-          id: 'json189581693',
           maxSize: 0,
           name: 'map_paths',
           presentable: false,
@@ -143,7 +134,6 @@ const railwayMapSchemas = {
       map_image: z.string()
     }),
     raw: {
-      id: 'pbc_1340498464',
       listRule: '@request.auth.id != ""',
       viewRule: '@request.auth.id != ""',
       createRule: '@request.auth.id != ""',
@@ -155,7 +145,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '[a-z0-9]{15}',
           hidden: false,
-          id: 'text3208210256',
           max: 15,
           min: 15,
           name: 'id',
@@ -169,7 +158,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text1579384326',
           max: 0,
           min: 0,
           name: 'name',
@@ -183,7 +171,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text196455508',
           max: 0,
           min: 0,
           name: 'desc',
@@ -196,9 +183,8 @@ const railwayMapSchemas = {
         },
         {
           cascadeDelete: true,
-          collectionId: 'pbc_1897454554',
+          collectionId: 'railway_map__lines',
           hidden: false,
-          id: 'relation1325501590',
           maxSelect: 999,
           minSelect: 0,
           name: 'lines',
@@ -209,7 +195,6 @@ const railwayMapSchemas = {
         },
         {
           hidden: false,
-          id: 'json3853369677',
           maxSize: 0,
           name: 'codes',
           presentable: false,
@@ -219,7 +204,6 @@ const railwayMapSchemas = {
         },
         {
           hidden: false,
-          id: 'json3631081861',
           maxSize: 0,
           name: 'coords',
           presentable: false,
@@ -229,7 +213,6 @@ const railwayMapSchemas = {
         },
         {
           hidden: false,
-          id: 'json2632528569',
           maxSize: 0,
           name: 'map_data',
           presentable: false,
@@ -240,7 +223,6 @@ const railwayMapSchemas = {
         {
           autogeneratePattern: '',
           hidden: false,
-          id: 'text2363381545',
           max: 0,
           min: 0,
           name: 'type',
@@ -253,7 +235,6 @@ const railwayMapSchemas = {
         },
         {
           hidden: false,
-          id: 'json2175659559',
           maxSize: 0,
           name: 'distances',
           presentable: false,
@@ -263,7 +244,6 @@ const railwayMapSchemas = {
         },
         {
           hidden: false,
-          id: 'file1170950963',
           maxSelect: 1,
           maxSize: 0,
           mimeTypes: [],

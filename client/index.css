@@ -1,6 +1,6 @@
 @import 'tailwindcss' source ('.');
 
-@reference '../../../../packages/lifeforge-ui/dist';
+@reference '../../../packages/lifeforge-ui/dist';
 
 @font-face {
   font-family: 'LTAIdentityMedium';
