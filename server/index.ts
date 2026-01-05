@@ -1,6 +1,7 @@
+import z from 'zod'
+
 import { forgeController, forgeRouter } from '@functions/routes'
 import { ClientError } from '@functions/routes/utils/response'
-import z from 'zod'
 
 import dijkstraWithTransfers from './utils/pathFinding'
 
@@ -14,7 +15,7 @@ const getLines = forgeController
   })
   .input({})
   .callback(({ pb }) =>
-    pb.getFullList.collection('railway_map__lines').execute()
+    pb.getFullList.collection('railwayMap__lines').execute()
   )
 
 const getStations = forgeController
@@ -27,7 +28,7 @@ const getStations = forgeController
   })
   .input({})
   .callback(({ pb }) =>
-    pb.getFullList.collection('railway_map__stations').execute()
+    pb.getFullList.collection('railwayMap__stations').execute()
   )
 
 const getShortestPath = forgeController
@@ -46,7 +47,7 @@ const getShortestPath = forgeController
   })
   .callback(async ({ pb, query: { start, end } }) => {
     const allStations = await pb.getFullList
-      .collection('railway_map__stations')
+      .collection('railwayMap__stations')
       .execute()
 
     if (
