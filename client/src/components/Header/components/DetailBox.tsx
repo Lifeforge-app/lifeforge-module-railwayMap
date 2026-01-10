@@ -1,4 +1,3 @@
-import RoutePlannerModal from '@/modals/RoutePlannerModal'
 import { Icon } from '@iconify/react'
 import { useDebounce } from '@uidotdev/usehooks'
 import clsx from 'clsx'
@@ -6,11 +5,13 @@ import { Button } from 'lifeforge-ui'
 import { useModalStore } from 'lifeforge-ui'
 import { useCallback } from 'react'
 
+import RoutePlannerModal from '@/modals/RoutePlannerModal'
+
 import { useRailwayMapContext } from '../../../providers/RailwayMapProvider'
 import StationCodes from '../../StationCode'
 
 function DetailBox() {
-  const open = useModalStore(state => state.open)
+  const { open } = useModalStore()
 
   const { selectedStation, setRoutePlannerStart } = useRailwayMapContext()
 

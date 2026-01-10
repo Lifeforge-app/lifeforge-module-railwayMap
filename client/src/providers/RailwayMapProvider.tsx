@@ -1,4 +1,3 @@
-import forgeAPI from '@/utils/forgeAPI'
 import { useQuery } from '@tanstack/react-query'
 import {
   createContext,
@@ -8,8 +7,9 @@ import {
   useRef,
   useState
 } from 'react'
-import { Outlet } from 'shared'
 import type { InferOutput } from 'shared'
+
+import forgeAPI from '@/utils/forgeAPI'
 
 export type RailwayMapStation = InferOutput<
   typeof forgeAPI.railwayMap.getStations
@@ -53,7 +53,11 @@ export const RailwayMapContext = createContext<IRailwayMapData | undefined>(
   undefined
 )
 
-export default function RailwayMapProvider() {
+export default function RailwayMapProvider({
+  children
+}: {
+  children: React.ReactNode
+}) {
   const [viewType, setViewType] = useState<RailwayMapViewType>('route')
 
   const [searchQuery, setSearchQuery] = useState('')
@@ -133,7 +137,7 @@ export default function RailwayMapProvider() {
 
   return (
     <RailwayMapContext.Provider value={value}>
-      <Outlet />
+      {children}
     </RailwayMapContext.Provider>
   )
 }

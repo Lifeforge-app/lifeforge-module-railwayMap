@@ -1,4 +1,3 @@
-import RoutePlannerModal from '@/modals/RoutePlannerModal'
 import {
   Button,
   ContextMenuGroup,
@@ -11,6 +10,8 @@ import _ from 'lodash'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import RoutePlannerModal from '@/modals/RoutePlannerModal'
+
 import { useRailwayMapContext } from '../../providers/RailwayMapProvider'
 import DetailBox from './components/DetailBox'
 import LineFilter from './components/LineFilter'
@@ -18,7 +19,7 @@ import SearchBar from './components/SearchBar'
 import ViewTypeSwitcher, { VIEW_TYPES } from './components/ViewTypeSwitcher'
 
 function Header() {
-  const open = useModalStore(state => state.open)
+  const { open } = useModalStore()
 
   const { t } = useTranslation('apps.railwayMap')
 
