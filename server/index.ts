@@ -1,44 +1,27 @@
+import { ClientError, forgeRouter } from '@lifeforge/server-utils'
+import { createForge } from '@lifeforge/server-utils'
 import z from 'zod'
 
-import { forgeController, forgeRouter } from '@functions/routes'
-import { ClientError } from '@functions/routes/utils/response'
-
+import schema from './schema'
 import dijkstraWithTransfers from './utils/pathFinding'
 
-const getLines = forgeController
-  .query()
-  .description({
-    en: 'Get all railway lines',
-    ms: 'Dapatkan semua laluan kereta api',
-    'zh-CN': '获取所有铁路线路',
-    'zh-TW': '獲取所有鐵路線路'
-  })
-  .input({})
-  .callback(({ pb }) =>
-    pb.getFullList.collection('railwayMap__lines').execute()
-  )
+const forge = createForge(schema)
 
-const getStations = forgeController
+const getLines = forge
   .query()
-  .description({
-    en: 'Get all railway stations',
-    ms: 'Dapatkan semua stesen kereta api',
-    'zh-CN': '获取所有火车站',
-    'zh-TW': '獲取所有火車站'
-  })
+  .description('Get all railway lines')
   .input({})
-  .callback(({ pb }) =>
-    pb.getFullList.collection('railwayMap__stations').execute()
-  )
+  .callback(({ pb }) => pb.getFullList.collection('lines').execute())
 
-const getShortestPath = forgeController
+const getStations = forge
   .query()
-  .description({
-    en: 'Calculate shortest route between stations',
-    ms: 'Kira laluan terpendek antara stesen',
-    'zh-CN': '计算站点之间的最短路线',
-    'zh-TW': '計算站點之間的最短路線'
-  })
+  .description('Get all railway stations')
+  .input({})
+  .callback(({ pb }) => pb.getFullList.collection('stations').execute())
+
+const getShortestPath = forge
+  .query()
+  .description('Calculate shortest route between stations')
   .input({
     query: z.object({
       start: z.string(),
@@ -46,9 +29,7 @@ const getShortestPath = forgeController
     })
   })
   .callback(async ({ pb, query: { start, end } }) => {
-    const allStations = await pb.getFullList
-      .collection('railwayMap__stations')
-      .execute()
+    const allStations = await pb.getFullList.collection('stations').execute()
 
     if (
       ![start, end].every(station => allStations.some(s => s.id === station))

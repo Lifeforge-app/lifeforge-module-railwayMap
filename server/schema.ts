@@ -1,6 +1,7 @@
+import { cleanSchemas } from '@lifeforge/server-utils'
 import z from 'zod'
 
-const railwayMapSchemas = {
+export const schemas = {
   lines: {
     schema: z.object({
       country: z.string(),
@@ -262,4 +263,4 @@ const railwayMapSchemas = {
   }
 }
 
-export default railwayMapSchemas
+export default cleanSchemas(schemas)

@@ -1,4 +1,10 @@
-import type { RecordModel } from 'pocketbase'
+interface RecordModel {
+  id: string
+  collectionId: string
+  collectionName: string
+  created: string
+  updated: string
+}
 
 interface RailwayMapLine extends RecordModel {
   country: string

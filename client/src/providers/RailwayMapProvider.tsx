@@ -11,13 +11,9 @@ import type { InferOutput } from 'shared'
 
 import forgeAPI from '@/utils/forgeAPI'
 
-export type RailwayMapStation = InferOutput<
-  typeof forgeAPI.railwayMap.getStations
->[number]
+export type RailwayMapStation = InferOutput<typeof forgeAPI.getStations>[number]
 
-export type RailwayMapLine = InferOutput<
-  typeof forgeAPI.railwayMap.getLines
->[number]
+export type RailwayMapLine = InferOutput<typeof forgeAPI.getLines>[number]
 
 export type RailwayMapViewType = 'route' | 'earth' | 'list'
 
@@ -62,9 +58,9 @@ export default function RailwayMapProvider({
 
   const [searchQuery, setSearchQuery] = useState('')
 
-  const linesQuery = useQuery(forgeAPI.railwayMap.getLines.queryOptions())
+  const linesQuery = useQuery(forgeAPI.getLines.queryOptions())
 
-  const stationsQuery = useQuery(forgeAPI.railwayMap.getStations.queryOptions())
+  const stationsQuery = useQuery(forgeAPI.getStations.queryOptions())
 
   const [filteredLines, setFilteredLines] = useState<string[]>([])
 

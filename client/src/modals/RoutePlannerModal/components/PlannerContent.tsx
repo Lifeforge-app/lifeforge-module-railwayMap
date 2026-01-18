@@ -1,9 +1,10 @@
-import forgeAPI from '@/utils/forgeAPI'
 import { Icon } from '@iconify/react'
 import { Button } from 'lifeforge-ui'
 import { useCallback, useMemo } from 'react'
 import { toast } from 'react-toastify'
 import { usePromiseLoading } from 'shared'
+
+import forgeAPI from '@/utils/forgeAPI'
 
 import { useRailwayMapContext } from '../../../providers/RailwayMapProvider'
 import { filterStations } from '../utils/stations'
@@ -58,7 +59,7 @@ function PlannerContent({
         return
       }
 
-      const data = await forgeAPI.railwayMap.getShortestPath
+      const data = await forgeAPI.getShortestPath
         .input({
           start,
           end
