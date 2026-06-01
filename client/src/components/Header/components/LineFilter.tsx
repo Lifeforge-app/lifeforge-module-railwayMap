@@ -1,6 +1,7 @@
-import { ContextMenuGroup, ContextMenuItem } from 'lifeforge-ui'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { ContextMenuGroup, ContextMenuItem } from '@lifeforge/ui'
 
 import {
   type RailwayMapLine,

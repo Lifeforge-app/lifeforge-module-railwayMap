@@ -1,8 +1,8 @@
 import { Icon } from '@iconify/react'
-import { Button } from 'lifeforge-ui'
+import { Button } from '@lifeforge/ui'
 import { useCallback, useMemo } from 'react'
 import { toast } from 'react-toastify'
-import { usePromiseLoading } from 'shared'
+import { usePromiseLoading } from '@lifeforge/shared'
 
 import forgeAPI from '@/utils/forgeAPI'
 

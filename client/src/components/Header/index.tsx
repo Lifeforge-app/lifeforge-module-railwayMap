@@ -1,14 +1,15 @@
+import _ from 'lodash'
+import { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import {
   Button,
   ContextMenuGroup,
   ContextMenuItem,
   FAB,
   ModuleHeader
-} from 'lifeforge-ui'
-import { useModalStore } from 'lifeforge-ui'
-import _ from 'lodash'
-import { useCallback, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+} from '@lifeforge/ui'
+import { useModalStore } from '@lifeforge/ui'
 
 import RoutePlannerModal from '@/modals/RoutePlannerModal'
 

@@ -1,9 +1,10 @@
 import { Icon } from '@iconify/react'
 import { useDebounce } from '@uidotdev/usehooks'
 import clsx from 'clsx'
-import { Button } from 'lifeforge-ui'
-import { useModalStore } from 'lifeforge-ui'
 import { useCallback } from 'react'
+
+import { Button } from '@lifeforge/ui'
+import { useModalStore } from '@lifeforge/ui'
 
 import RoutePlannerModal from '@/modals/RoutePlannerModal'
 
