@@ -1,40 +1,60 @@
-import { ClientError, forgeRouter } from '@lifeforge/server-utils'
-import { createForge } from '@lifeforge/server-utils'
 import z from 'zod'
+
+import {
+  createForge,
+  forgeRouter,
+  writeContractFileToClient
+} from '@lifeforge/server-utils'
 
 import schema from './schema'
 import dijkstraWithTransfers from './utils/pathFinding'
 
 const forge = createForge(schema)
 
-const getLines = forge
-  .query()
-  .description('Get all railway lines')
-  .input({})
-  .callback(({ pb }) => pb.getFullList.collection('lines').execute())
-
-const getStations = forge
-  .query()
-  .description('Get all railway stations')
-  .input({})
-  .callback(({ pb }) => pb.getFullList.collection('stations').execute())
-
-const getShortestPath = forge
-  .query()
-  .description('Calculate shortest route between stations')
-  .input({
-    query: z.object({
-      start: z.string(),
-      end: z.string()
-    })
+export const getLines = forge
+  .query({
+    description: 'Get all railway lines',
+    output: {
+      OK: z.array(schema.lines)
+    }
   })
-  .callback(async ({ pb, query: { start, end } }) => {
+  .callback(async ({ pb, response }) =>
+    response.ok(await pb.getFullList.collection('lines').execute())
+  )
+
+export const getStations = forge
+  .query({
+    description: 'Get all railway stations',
+    output: {
+      OK: z.array(schema.stations)
+    }
+  })
+  .callback(async ({ pb, response }) =>
+    response.ok(await pb.getFullList.collection('stations').execute())
+  )
+
+export const getShortestPath = forge
+  .query({
+    description: 'Calculate shortest route between stations',
+    input: {
+      query: z.object({
+        start: z.string(),
+        end: z.string()
+      })
+    },
+    output: {
+      OK: z.array(schema.stations),
+      BAD_REQUEST: z.string(),
+      NOT_FOUND: true
+    }
+  })
+  .callback(async ({ pb, query: { start, end }, response }) => {
     const allStations = await pb.getFullList.collection('stations').execute()
 
     if (
       ![start, end].every(station => allStations.some(s => s.id === station))
     ) {
-      throw new ClientError('Invalid start or end station')
+      return response.badRequest('Invalid start or end station')
     }
 
     const graphWithWeight = allStations.reduce<
@@ -68,16 +88,22 @@ const getShortestPath = forge
     )
 
     if (!path) {
-      throw new Error('No path found')
+      return response.notFound()
     }
 
-    return path
-      .map(station => allStations.find(s => s.name === station))
-      .filter(s => !!s)
+    return response.ok(
+      path
+        .map(station => allStations.find(s => s.name === station))
+        .filter(s => !!s)
+    )
   })
 
-export default forgeRouter({
+const routes = forgeRouter({
   getLines,
   getStations,
   getShortestPath
 })
+
+writeContractFileToClient(routes, import.meta.dirname)
+
+export default routes
