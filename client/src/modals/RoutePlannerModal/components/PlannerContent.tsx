@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react'
 import { toast } from 'react-toastify'
 import { usePromiseLoading } from '@lifeforge/shared'
 
-import forgeAPI from '@/utils/forgeAPI'
+import { forgeAPI } from '@/manifest'
 
 import { useRailwayMapContext } from '../../../providers/RailwayMapProvider'
 import { filterStations } from '../utils/stations'
