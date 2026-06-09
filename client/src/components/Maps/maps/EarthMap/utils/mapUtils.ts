@@ -1,8 +1,9 @@
+import L from 'leaflet'
+
 import type {
   RailwayMapLine,
   RailwayMapStation
 } from '@/providers/RailwayMapProvider'
-import L from 'leaflet'
 
 export const initializeMap = (element: HTMLDivElement): L.Map => {
   const map = L.map(element).setView([1.3521, 103.8198], 12)

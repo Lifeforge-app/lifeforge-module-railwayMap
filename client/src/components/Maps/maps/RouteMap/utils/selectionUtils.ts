@@ -1,8 +1,9 @@
+import * as d3 from 'd3'
+
 import type {
   RailwayMapLine,
   RailwayMapStation
 } from '@/providers/RailwayMapProvider'
-import * as d3 from 'd3'
 
 import { getLine } from './stationUtils'
 

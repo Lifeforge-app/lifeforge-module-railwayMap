@@ -1,5 +1,6 @@
-import type { RailwayMapStation } from '@/providers/RailwayMapProvider'
 import * as d3 from 'd3'
+
+import type { RailwayMapStation } from '@/providers/RailwayMapProvider'
 
 let zoomBehavior: d3.ZoomBehavior<Element, unknown>
 

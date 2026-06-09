@@ -1,9 +1,10 @@
+import L from 'leaflet'
+import { type RefObject, useEffect, useRef } from 'react'
+
 import type {
   RailwayMapLine,
   RailwayMapStation
 } from '@/providers/RailwayMapProvider'
-import L from 'leaflet'
-import { type RefObject, useEffect, useRef } from 'react'
 
 import { initializeMap, renderLines, renderStations } from '../utils/mapUtils'
 

@@ -1,7 +1,7 @@
-import { Icon , Listbox, ListboxOption } from '@lifeforge/ui'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 
+import { Icon, Listbox, ListboxOption } from '@lifeforge/ui'
 
 import type { RailwayMapViewType } from '@/providers/RailwayMapProvider'
 
