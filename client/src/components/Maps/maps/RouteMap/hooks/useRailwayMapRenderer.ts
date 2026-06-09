@@ -2,7 +2,7 @@
 import * as d3 from 'd3'
 import { useEffect, useMemo, useRef } from 'react'
 
-import { usePersonalization } from '@lifeforge/shared'
+import { usePersonalization } from '@lifeforge/ui'
 
 import { useRailwayMapContext } from '../../../../../providers/RailwayMapProvider'
 import {

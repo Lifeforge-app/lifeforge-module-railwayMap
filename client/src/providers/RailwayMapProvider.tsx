@@ -8,7 +8,7 @@ import {
   useState
 } from 'react'
 
-import type { InferOutput } from '@lifeforge/shared'
+import type { InferOutput } from '@lifeforge/api'
 
 import { forgeAPI } from '@/manifest'
 

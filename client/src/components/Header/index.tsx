@@ -8,8 +8,7 @@ import {
   ContextMenuItem,
   FAB,
   ModuleHeader
-} from '@lifeforge/ui'
-import { useModalStore } from '@lifeforge/ui'
+, useModalStore } from '@lifeforge/ui'
 
 import RoutePlannerModal from '@/modals/RoutePlannerModal'
 

@@ -24,8 +24,8 @@ function SearchBar() {
       <SearchInput
         namespace="apps.railwayMap"
         searchTarget="station"
-        onChange={setSearchQuery}
         value={searchQuery}
+        onChange={setSearchQuery}
       />
       {searchQuery.length > 0 && (
         <div
