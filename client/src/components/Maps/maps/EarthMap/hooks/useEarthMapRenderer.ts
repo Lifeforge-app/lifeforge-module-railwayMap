@@ -22,9 +22,7 @@ export const useEarthMapRenderer = ({
   lines
 }: EarthMapRendererProps) => {
   const mapInstanceRef = useRef<L.Map | null>(null)
-
   const polylineLayers = useRef<Record<string, L.Polyline>>({})
-
   const stationMarkers = useRef<Record<string, L.Marker>>({})
 
   useEffect(() => {

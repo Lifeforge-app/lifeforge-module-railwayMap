@@ -10,7 +10,6 @@ import {
 
 function LineFilter() {
   const { lines, filteredLines, setFilteredLines } = useRailwayMapContext()
-
   const { t } = useModuleTranslation()
 
   const onClick = useCallback((line: RailwayMapLine) => {

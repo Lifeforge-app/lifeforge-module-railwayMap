@@ -56,17 +56,11 @@ export default function RailwayMapProvider({
   children: React.ReactNode
 }) {
   const [viewType, setViewType] = useState<RailwayMapViewType>('route')
-
   const [searchQuery, setSearchQuery] = useState('')
-
   const linesQuery = useQuery(forgeAPI.getLines.queryOptions())
-
   const stationsQuery = useQuery(forgeAPI.getStations.queryOptions())
-
   const [filteredLines, setFilteredLines] = useState<string[]>([])
-
   const [routePlannerStart, setRoutePlannerStart] = useState('')
-
   const [routePlannerEnd, setRoutePlannerEnd] = useState('')
 
   const [shortestRoute, setShortestRoute] = useState<
@@ -81,7 +75,6 @@ export default function RailwayMapProvider({
   }, [stationsQuery.data])
 
   const routeMapSVGRef = useRef<SVGSVGElement>(null)
-
   const routeMapGRef = useRef<SVGGElement>(null)
 
   useEffect(() => {

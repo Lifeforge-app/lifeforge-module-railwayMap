@@ -21,7 +21,6 @@ import ViewTypeSwitcher, { VIEW_TYPES } from './components/ViewTypeSwitcher'
 
 function Header() {
   const { open } = useModalStore()
-
   const { t } = useModuleTranslation()
 
   const { viewType, setViewType, shortestRoute, setShortestRoute } =

@@ -11,7 +11,6 @@ import StationCodes from '../../StationCode'
 
 function DetailBox() {
   const { open } = useModalStore()
-
   const { selectedStation, setRoutePlannerStart } = useRailwayMapContext()
 
   const innerSelectedStation = useDebounce(
