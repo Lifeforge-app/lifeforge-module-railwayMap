@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useModuleTranslation } from '@lifeforge/localization'
 
 import { ContextMenuGroup, ContextMenuItem } from '@lifeforge/ui'
 
@@ -11,7 +11,7 @@ import {
 function LineFilter() {
   const { lines, filteredLines, setFilteredLines } = useRailwayMapContext()
 
-  const { t } = useTranslation('apps.railwayMap')
+  const { t } = useModuleTranslation()
 
   const onClick = useCallback((line: RailwayMapLine) => {
     setFilteredLines(prev =>

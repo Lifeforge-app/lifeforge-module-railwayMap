@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { useTranslation } from 'react-i18next'
+import { useModuleTranslation } from '@lifeforge/localization'
 
 import { Icon, Listbox, ListboxOption } from '@lifeforge/ui'
 
@@ -17,7 +17,7 @@ interface ViewTypeSwitcherProps {
 }
 
 function ViewTypeSwitcher({ viewType, setViewType }: ViewTypeSwitcherProps) {
-  const { t } = useTranslation('apps.railwayMap')
+  const { t } = useModuleTranslation()
 
   return (
     <Listbox

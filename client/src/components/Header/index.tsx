@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { useCallback, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useModuleTranslation } from '@lifeforge/localization'
 
 import {
   Button,
@@ -22,7 +22,7 @@ import ViewTypeSwitcher, { VIEW_TYPES } from './components/ViewTypeSwitcher'
 function Header() {
   const { open } = useModalStore()
 
-  const { t } = useTranslation('apps.railwayMap')
+  const { t } = useModuleTranslation()
 
   const { viewType, setViewType, shortestRoute, setShortestRoute } =
     useRailwayMapContext()
