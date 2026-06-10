@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { useCallback, useMemo } from 'react'
-import { useModuleTranslation } from '@lifeforge/localization'
 
+import { useModuleTranslation } from '@lifeforge/localization'
 import {
   Button,
   ContextMenuGroup,
@@ -47,7 +47,6 @@ function Header() {
             className="hidden md:flex"
             dangerous={hasRoute}
             icon={hasRoute ? 'tabler:route-off' : 'tabler:route'}
-            namespace="apps.railwayMap"
             variant={hasRoute ? 'plain' : 'primary'}
             onClick={handleRoutePlannerToggle}
           >

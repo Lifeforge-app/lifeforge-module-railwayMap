@@ -14,7 +14,6 @@ interface StationSelectorProps {
   className?: string
   icon: string
   name: string
-  namespace: string
 }
 
 function StationSelector({
@@ -25,8 +24,7 @@ function StationSelector({
   setQuery,
   className,
   icon,
-  name,
-  namespace
+  name
 }: StationSelectorProps) {
   return (
     <ComboboxInput
@@ -34,7 +32,6 @@ function StationSelector({
       displayValue={value => formatStationDisplay(stations, value)}
       icon={icon}
       label={name}
-      namespace={namespace}
       value={value}
       onChange={setValue}
       onQueryChanged={setQuery}

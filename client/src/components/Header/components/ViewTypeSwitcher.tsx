@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { useModuleTranslation } from '@lifeforge/localization'
 
+import { useModuleTranslation } from '@lifeforge/localization'
 import { Icon, Listbox, ListboxOption } from '@lifeforge/ui'
 
 import type { RailwayMapViewType } from '@/providers/RailwayMapProvider'

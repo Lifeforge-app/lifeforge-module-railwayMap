@@ -21,7 +21,6 @@ function RoutePlannerModal({ onClose }: { onClose: () => void }) {
     <div className="min-w-[40vw]">
       <ModalHeader
         icon="tabler:route"
-        namespace="apps.railwayMap"
         title="Route Planner"
         onClose={onClose}
       />

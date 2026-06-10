@@ -94,7 +94,6 @@ function PlannerContent({
           filteredStations={filteredStart}
           icon="material-symbols:start-rounded"
           name="Boarding at"
-          namespace="apps.railwayMap"
           setQuery={setStartQuery}
           setValue={setStart}
           stations={stations}
@@ -109,7 +108,6 @@ function PlannerContent({
           filteredStations={filteredEnd}
           icon="tabler:flag"
           name="Alighting at"
-          namespace="apps.railwayMap"
           setQuery={setEndQuery}
           setValue={setEnd}
           stations={stations}

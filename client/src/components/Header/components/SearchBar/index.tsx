@@ -22,7 +22,6 @@ function SearchBar() {
   return (
     <div className="relative z-[500] w-full">
       <SearchInput
-        namespace="apps.railwayMap"
         searchTarget="station"
         value={searchQuery}
         onChange={setSearchQuery}
@@ -46,8 +45,7 @@ function SearchBar() {
                     smaller
                     icon="tabler:search-off"
                     message={{
-                      id: 'search',
-                      namespace: 'apps.railwayMap'
+                      id: 'search'
                     }}
                   />
                 </div>

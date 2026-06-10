@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { useModuleTranslation } from '@lifeforge/localization'
 
+import { useModuleTranslation } from '@lifeforge/localization'
 import { ContextMenuGroup, ContextMenuItem } from '@lifeforge/ui'
 
 import {
