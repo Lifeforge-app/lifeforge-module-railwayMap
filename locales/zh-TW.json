@@ -1,6 +1,6 @@
 {
-  "title": "鐵路地圖",
-  "description": "馬來西亞和新加坡MRT及LRT的終極地圖",
+  "title": "鐵路之旅",
+  "description": "點燃你的鐵路狂熱。任何網絡，任何國家。",
   "viewTypes": {
     "routeMap": "路線圖",
     "earthMap": "地球地圖",
@@ -9,10 +9,29 @@
   },
   "inputs": {
     "boardingAt": "登車站點",
-    "alightingAt": "下車站點"
+    "alightingAt": "下車站點",
+    "modifyMap": {
+      "name": "地圖名稱",
+      "country": "國家",
+      "file": "地圖資料檔案"
+    }
   },
   "items": {
-    "station": "車站"
+    "station": "車站",
+    "map": "地圖"
+  },
+  "empty": {
+    "map": {
+      "title": "未找到地圖",
+      "description": "尚無可用的鐵路地圖。"
+    }
+  },
+  "misc": {
+    "counts": "{{lineCount}} 條路線，{{stationCount}} 個車站"
+  },
+  "tabs": {
+    "map": "地圖",
+    "stations": "車站"
   },
   "railwayLinesSelectorTitle": "鐵路路線",
   "buttons": {
@@ -20,6 +39,9 @@
     "clearRoute": "清除路線"
   },
   "modals": {
+    "map": {
+      "create": "建立地圖"
+    },
     "routePlanner": "路線規劃器"
   }
 }

@@ -7,101 +7,120 @@ import {
 } from '@lifeforge/server-utils'
 
 import schema from './schema'
-import dijkstraWithTransfers from './utils/pathFinding'
 
 const forge = createForge(schema)
 
-export const getLines = forge
+const lineSchema = z.object({
+  color: z.string(),
+  name: z.string(),
+  code: z.string(),
+  path: z.array(z.array(z.number()))
+})
+
+const stationSchema = z.object({
+  id: z.string(),
+  x: z.number(),
+  y: z.number(),
+  name: z.string(),
+  lines: z.array(z.string()),
+  type: z.enum(['station', 'interchange']),
+  codes: z.array(z.string()).optional(),
+  textOffsetX: z.number().optional(),
+  textOffsetY: z.number().optional(),
+  textAnchor: z.string().optional()
+})
+
+export const listMaps = forge
   .query({
-    description: 'Get all railway lines',
+    description: 'Get all railway maps',
     output: {
-      OK: z.array(schema.lines)
+      OK: z.array(
+        schema.map.pick({ id: true, name: true, country: true }).extend({
+          lineCount: z.number(),
+          stationCount: z.number(),
+          lines: z.array(lineSchema),
+          stations: z.array(stationSchema)
+        })
+      )
     }
   })
   .callback(async ({ pb, response }) =>
-    response.ok(await pb.getFullList.collection('lines').execute())
+    response.ok(
+      (await pb.getFullList.collection('map').sort(['name']).execute()).map(
+        e => ({
+          id: e.id,
+          name: e.name,
+          country: e.country,
+          lineCount: e.lines.length,
+          stationCount: e.stations.length,
+          lines: e.lines as any,
+          stations: e.stations as any
+        })
+      )
+    )
   )
 
-export const getStations = forge
+export const getMap = forge
   .query({
-    description: 'Get all railway stations',
-    output: {
-      OK: z.array(schema.stations)
-    }
-  })
-  .callback(async ({ pb, response }) =>
-    response.ok(await pb.getFullList.collection('stations').execute())
-  )
-
-export const getShortestPath = forge
-  .query({
-    description: 'Calculate shortest route between stations',
+    description: 'Get railway map data by id',
     input: {
       query: z.object({
-        start: z.string(),
-        end: z.string()
+        id: z.string()
       })
     },
+    existenceCheck: {
+      query: {
+        id: 'map'
+      }
+    },
     output: {
-      OK: z.array(schema.stations),
-      BAD_REQUEST: z.string(),
+      OK: schema.map
+        .omit({
+          lines: true,
+          stations: true
+        })
+        .extend({
+          lines: z.array(lineSchema),
+          stations: z.array(stationSchema)
+        }),
       NOT_FOUND: true
     }
   })
-  .callback(async ({ pb, query: { start, end }, response }) => {
-    const allStations = await pb.getFullList.collection('stations').execute()
+  .callback(async ({ pb, query: { id }, response }) => {
+    const map = await pb.getOne.collection('map').id(id).execute()
 
-    if (
-      ![start, end].every(station => allStations.some(s => s.id === station))
-    ) {
-      return response.badRequest('Invalid start or end station')
-    }
-
-    const graphWithWeight = allStations.reduce<
-      Record<string, Record<string, number>>
-    >((acc, station) => {
-      if (!station.distances) return acc
-      acc[station.name] = Object.fromEntries(
-        Object.entries(station.distances).map(([name, distance]) => [
-          name,
-          distance
-        ])
-      ) as Record<string, number>
-
-      return acc
-    }, {})
-
-    const lines = allStations.reduce<Record<string, string[]>>(
-      (acc, station) => {
-        acc[station.name] = station.lines ?? []
-
-        return acc
-      },
-      {}
-    )
-
-    const path = dijkstraWithTransfers(
-      graphWithWeight,
-      lines,
-      allStations.find(s => s.id === start)?.name ?? '',
-      allStations.find(s => s.id === end)?.name ?? ''
-    )
-
-    if (!path) {
-      return response.notFound()
-    }
-
-    return response.ok(
-      path
-        .map(station => allStations.find(s => s.name === station))
-        .filter(s => !!s)
-    )
+    return response.ok(map as any)
   })
 
+export const createMap = forge
+  .mutation({
+    description: 'Create a new railway map',
+    input: {
+      body: z.object({
+        name: z.string().min(1),
+        country: z.string().min(1),
+        lines: z.array(lineSchema),
+        stations: z.array(stationSchema)
+      })
+    },
+    output: {
+      CREATED: schema.map
+    }
+  })
+  .callback(
+    async ({ pb, body: { name, country, lines, stations }, response }) =>
+      response.created(
+        await pb.create
+          .collection('map')
+          .data({ name, country, lines, stations })
+          .execute()
+      )
+  )
+
 const routes = forgeRouter({
-  getLines,
-  getStations,
-  getShortestPath
+  listMaps,
+  getMap,
+  createMap
 })
 
 writeContractFileToClient(routes, import.meta.dirname)

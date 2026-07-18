@@ -6,7 +6,8 @@ import contract from './contract'
 
 const { forgeAPI, ...manifest } = createForgeModuleClient({
   routes: {
-    '/': lazy(() => import('@'))
+    '/': lazy(() => import('@/pages/MapList')),
+    '/map/:id': lazy(() => import('@/pages/MapView'))
   },
   contract
 })

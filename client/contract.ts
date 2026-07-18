@@ -1,7 +1,7 @@
 export const contract = {
-  "getLines": {
+  "listMaps": {
     "method": "get",
-    "description": "Get all railway lines",
+    "description": "Get all railway maps",
     "noAuth": false,
     "encrypted": true,
     "isDownloadable": false,
@@ -14,119 +14,129 @@ export const contract = {
         "items": {
           "type": "object",
           "properties": {
-            "country": {
-              "type": "string"
-            },
-            "type": {
-              "type": "string"
-            },
-            "code": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "color": {
-              "type": "string"
-            },
-            "ways": {},
-            "map_paths": {},
             "id": {
               "type": "string"
             },
-            "collectionId": {
-              "type": "string"
-            },
-            "collectionName": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "country",
-            "type",
-            "code",
-            "name",
-            "color",
-            "ways",
-            "map_paths",
-            "id",
-            "collectionId",
-            "collectionName"
-          ],
-          "additionalProperties": false
-        }
-      }
-    }
-  },
-  "getStations": {
-    "method": "get",
-    "description": "Get all railway stations",
-    "noAuth": false,
-    "encrypted": true,
-    "isDownloadable": false,
-    "media": null,
-    "input": {},
-    "output": {
-      "OK": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
             "name": {
               "type": "string"
             },
-            "desc": {
+            "country": {
               "type": "string"
+            },
+            "lineCount": {
+              "type": "number"
+            },
+            "stationCount": {
+              "type": "number"
             },
             "lines": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "color": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "color",
+                  "name",
+                  "code",
+                  "path"
+                ],
+                "additionalProperties": false
               }
             },
-            "codes": {},
-            "coords": {},
-            "map_data": {},
-            "type": {
-              "type": "string"
-            },
-            "distances": {},
-            "map_image": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            },
-            "collectionId": {
-              "type": "string"
-            },
-            "collectionName": {
-              "type": "string"
+            "stations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "x": {
+                    "type": "number"
+                  },
+                  "y": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "lines": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "station",
+                      "interchange"
+                    ]
+                  },
+                  "codes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "textOffsetX": {
+                    "type": "number"
+                  },
+                  "textOffsetY": {
+                    "type": "number"
+                  },
+                  "textAnchor": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "x",
+                  "y",
+                  "name",
+                  "lines",
+                  "type"
+                ],
+                "additionalProperties": false
+              }
             }
           },
           "required": [
-            "name",
-            "desc",
-            "lines",
-            "codes",
-            "coords",
-            "map_data",
-            "type",
-            "distances",
-            "map_image",
             "id",
-            "collectionId",
-            "collectionName"
+            "name",
+            "country",
+            "lineCount",
+            "stationCount",
+            "lines",
+            "stations"
           ],
           "additionalProperties": false
         }
       }
     }
   },
-  "getShortestPath": {
+  "getMap": {
     "method": "get",
-    "description": "Calculate shortest route between stations",
+    "description": "Get railway map data by id",
     "noAuth": false,
     "encrypted": true,
     "isDownloadable": false,
@@ -136,16 +146,12 @@ export const contract = {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "type": "object",
         "properties": {
-          "start": {
-            "type": "string"
-          },
-          "end": {
+          "id": {
             "type": "string"
           }
         },
         "required": [
-          "start",
-          "end"
+          "id"
         ],
         "additionalProperties": false
       }
@@ -153,64 +159,298 @@ export const contract = {
     "output": {
       "OK": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string"
-            },
-            "desc": {
-              "type": "string"
-            },
-            "lines": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "codes": {},
-            "coords": {},
-            "map_data": {},
-            "type": {
-              "type": "string"
-            },
-            "distances": {},
-            "map_image": {
-              "type": "string"
-            },
-            "id": {
-              "type": "string"
-            },
-            "collectionId": {
-              "type": "string"
-            },
-            "collectionName": {
-              "type": "string"
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "collectionId": {
+            "type": "string"
+          },
+          "collectionName": {
+            "type": "string"
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "color",
+                "name",
+                "code",
+                "path"
+              ],
+              "additionalProperties": false
             }
           },
-          "required": [
-            "name",
-            "desc",
-            "lines",
-            "codes",
-            "coords",
-            "map_data",
-            "type",
-            "distances",
-            "map_image",
-            "id",
-            "collectionId",
-            "collectionName"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "BAD_REQUEST": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "string"
+          "stations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lines": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "station",
+                    "interchange"
+                  ]
+                },
+                "codes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "textOffsetX": {
+                  "type": "number"
+                },
+                "textOffsetY": {
+                  "type": "number"
+                },
+                "textAnchor": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "x",
+                "y",
+                "name",
+                "lines",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name",
+          "country",
+          "created",
+          "updated",
+          "id",
+          "collectionId",
+          "collectionName",
+          "lines",
+          "stations"
+        ],
+        "additionalProperties": false
       },
       "NOT_FOUND": true
+    }
+  },
+  "createMap": {
+    "method": "post",
+    "description": "Create a new railway map",
+    "noAuth": false,
+    "encrypted": true,
+    "isDownloadable": false,
+    "media": null,
+    "input": {
+      "body": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "country": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "color",
+                "name",
+                "code",
+                "path"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "stations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "lines": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "station",
+                    "interchange"
+                  ]
+                },
+                "codes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "textOffsetX": {
+                  "type": "number"
+                },
+                "textOffsetY": {
+                  "type": "number"
+                },
+                "textAnchor": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "x",
+                "y",
+                "name",
+                "lines",
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "name",
+          "country",
+          "lines",
+          "stations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "output": {
+      "CREATED": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "lines": {},
+          "stations": {},
+          "created": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "collectionId": {
+            "type": "string"
+          },
+          "collectionName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "country",
+          "lines",
+          "stations",
+          "created",
+          "updated",
+          "id",
+          "collectionId",
+          "collectionName"
+        ],
+        "additionalProperties": false
+      }
     }
   }
 } as const

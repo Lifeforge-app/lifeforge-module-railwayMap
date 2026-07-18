@@ -1,6 +1,6 @@
 {
-  "title": "Railway Map",
-  "description": "The ultimate map for MRT and LRT in Malaysia and Singapore",
+  "title": "Railway Journey",
+  "description": "Fuel your railway fever. Any network, any country.",
   "viewTypes": {
     "routeMap": "Route Map",
     "earthMap": "Earth Map",
@@ -9,10 +9,29 @@
   },
   "inputs": {
     "boardingAt": "Boarding At",
-    "alightingAt": "Alighting At"
+    "alightingAt": "Alighting At",
+    "modifyMap": {
+      "name": "Map Name",
+      "country": "Country",
+      "file": "Map Data File"
+    }
   },
   "items": {
-    "station": "Station"
+    "station": "Station",
+    "map": "Map"
+  },
+  "empty": {
+    "map": {
+      "title": "No Maps Found",
+      "description": "There are no railway maps available yet."
+    }
+  },
+  "misc": {
+    "counts": "{{lineCount}} lines, {{stationCount}} stations"
+  },
+  "tabs": {
+    "map": "Map",
+    "stations": "Stations"
   },
   "railwayLinesSelectorTitle": "Railway Lines",
   "buttons": {
@@ -20,6 +39,9 @@
     "clearRoute": "Clear Route"
   },
   "modals": {
+    "map": {
+      "create": "Create Map"
+    },
     "routePlanner": "Route Planner"
   }
 }

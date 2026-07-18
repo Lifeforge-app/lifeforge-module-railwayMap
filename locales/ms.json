@@ -1,6 +1,6 @@
 {
-  "title": "Peta Kereta Api",
-  "description": "Peta utama untuk MRT dan LRT di Malaysia dan Singapura",
+  "title": "Perjalanan Kereta Api",
+  "description": "Semarakkan demam kereta api anda. Mana-mana rangkaian, mana-mana negara.",
   "viewTypes": {
     "routeMap": "Peta Laluan",
     "earthMap": "Peta Bumi",
@@ -9,10 +9,29 @@
   },
   "inputs": {
     "boardingAt": "Menaiki Di",
-    "alightingAt": "Turun Di"
+    "alightingAt": "Turun Di",
+    "modifyMap": {
+      "name": "Nama Peta",
+      "country": "Negara",
+      "file": "Fail Data Peta"
+    }
   },
   "items": {
-    "station": "Stesen"
+    "station": "Stesen",
+    "map": "Peta"
+  },
+  "empty": {
+    "map": {
+      "title": "Tiada Peta Ditemui",
+      "description": "Belum ada peta kereta api yang tersedia."
+    }
+  },
+  "misc": {
+    "counts": "{{lineCount}} laluan, {{stationCount}} stesen"
+  },
+  "tabs": {
+    "map": "Peta",
+    "stations": "Stesen"
   },
   "railwayLinesSelectorTitle": "Laluan Kereta Api",
   "buttons": {
@@ -20,6 +39,9 @@
     "clearRoute": "Bersihkan Laluan"
   },
   "modals": {
+    "map": {
+      "create": "Cipta Peta"
+    },
     "routePlanner": "Perancang Laluan"
   }
 }

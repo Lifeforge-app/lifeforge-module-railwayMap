@@ -1,49 +1,25 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
+import { createContext, useContext, useRef, useState } from 'react'
+import { useParams } from 'react-router'
 
 import type { InferOutput } from '@lifeforge/api'
+import { WithQuery } from '@lifeforge/ui'
 
 import { forgeAPI } from '@/manifest'
 
-export type RailwayMapStation = InferOutput<typeof forgeAPI.getStations>[number]
+type MapData = InferOutput<typeof forgeAPI.getMap>
+type MapLine = MapData['lines'][number]
+type MapStation = MapData['stations'][number]
 
-export type RailwayMapLine = InferOutput<typeof forgeAPI.getLines>[number]
-
-export type RailwayMapViewType = 'route' | 'earth' | 'list'
+export type { MapLine, MapStation }
 
 interface IRailwayMapData {
-  viewType: RailwayMapViewType
-  setViewType: React.Dispatch<React.SetStateAction<RailwayMapViewType>>
-  searchQuery: string
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>
-  lines: RailwayMapLine[]
-  linesLoading: boolean
-  stations: RailwayMapStation[]
-  stationsLoading: boolean
-  filteredLines: string[]
-  setFilteredLines: React.Dispatch<React.SetStateAction<string[]>>
-  routePlannerStart: string
-  setRoutePlannerStart: React.Dispatch<React.SetStateAction<string>>
-  routePlannerEnd: string
-  setRoutePlannerEnd: React.Dispatch<React.SetStateAction<string>>
-  shortestRoute: RailwayMapStation[] | 'loading' | 'error'
-  setShortestRoute: React.Dispatch<
-    React.SetStateAction<RailwayMapStation[] | 'loading' | 'error'>
-  >
+  map: MapData
   routeMapSVGRef: React.RefObject<SVGSVGElement | null>
   routeMapGRef: React.RefObject<SVGGElement | null>
-  selectedStation: RailwayMapStation | null
-  setSelectedStation: React.Dispatch<
-    React.SetStateAction<RailwayMapStation | null>
-  >
-  centerStation: RailwayMapStation | undefined
+  selectedStation: MapStation | null
+  setSelectedStation: React.Dispatch<React.SetStateAction<MapStation | null>>
+  centerStation: MapStation | undefined
 }
 
 export const RailwayMapContext = createContext<IRailwayMapData | undefined>(
@@ -55,80 +31,45 @@ export default function RailwayMapProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [viewType, setViewType] = useState<RailwayMapViewType>('route')
-  const [searchQuery, setSearchQuery] = useState('')
-  const linesQuery = useQuery(forgeAPI.getLines.queryOptions())
-  const stationsQuery = useQuery(forgeAPI.getStations.queryOptions())
-  const [filteredLines, setFilteredLines] = useState<string[]>([])
-  const [routePlannerStart, setRoutePlannerStart] = useState('')
-  const [routePlannerEnd, setRoutePlannerEnd] = useState('')
+  const { id } = useParams<{ id: string }>()
 
-  const [shortestRoute, setShortestRoute] = useState<
-    RailwayMapStation[] | 'loading' | 'error'
-  >([])
+  const mapQuery = useQuery(
+    forgeAPI.getMap.input({ id: id! }).queryOptions({ enabled: !!id })
+  )
 
-  const [selectedStation, setSelectedStation] =
-    useState<RailwayMapStation | null>(null)
-
-  const centerStation = useMemo(() => {
-    return stationsQuery.data?.find(station => station.name === 'Novena')
-  }, [stationsQuery.data])
+  const [selectedStation, setSelectedStation] = useState<MapStation | null>(
+    null
+  )
 
   const routeMapSVGRef = useRef<SVGSVGElement>(null)
   const routeMapGRef = useRef<SVGGElement>(null)
 
-  useEffect(() => {
-    if (linesQuery.data) {
-      setFilteredLines(linesQuery.data.map(line => line.id))
-    }
-  }, [linesQuery.data])
-
-  const value = useMemo(
-    () => ({
-      viewType,
-      setViewType,
-      searchQuery,
-      setSearchQuery,
-      lines: linesQuery.data ?? [],
-      linesLoading: linesQuery.isLoading,
-      stations: stationsQuery.data ?? [],
-      stationsLoading: stationsQuery.isLoading,
-      filteredLines,
-      setFilteredLines,
-      routePlannerStart,
-      setRoutePlannerStart,
-      routePlannerEnd,
-      setRoutePlannerEnd,
-      shortestRoute,
-      setShortestRoute,
-      routeMapSVGRef,
-      routeMapGRef,
-      selectedStation,
-      setSelectedStation,
-      centerStation
-    }),
-    [
-      viewType,
-      searchQuery,
-      linesQuery.data,
-      linesQuery.isLoading,
-      stationsQuery.data,
-      stationsQuery.isLoading,
-      filteredLines,
-      routePlannerStart,
-      routePlannerEnd,
-      shortestRoute,
-      routeMapSVGRef,
-      routeMapGRef,
-      selectedStation,
-      centerStation
-    ]
-  )
-
   return (
-    <RailwayMapContext.Provider value={value}>
-      {children}
-    </RailwayMapContext.Provider>
+    <WithQuery query={mapQuery}>
+      {data => {
+        const stations = data.stations
+
+        const centerStation =
+          stations.length > 0
+            ? stations.find(s => s.name === 'Novena') || stations[0]
+            : undefined
+
+        return (
+          <RailwayMapContext
+            value={{
+              map: data,
+              routeMapSVGRef,
+              routeMapGRef,
+              selectedStation,
+              setSelectedStation,
+              centerStation
+            }}
+          >
+            {children}
+          </RailwayMapContext>
+        )
+      }}
+    </WithQuery>
   )
 }
 
