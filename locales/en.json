@@ -14,6 +14,10 @@
       "name": "Map Name",
       "country": "Country",
       "file": "Map Data File"
+    },
+    "uploadStationSign": {
+      "file": "Sign Photo",
+      "stationCode": "Station Code"
     }
   },
   "items": {
@@ -24,6 +28,10 @@
     "map": {
       "title": "No Maps Found",
       "description": "There are no railway maps available yet."
+    },
+    "sign": {
+      "title": "No Signs Found",
+      "description": "You haven't uploaded any station signs yet."
     }
   },
   "misc": {
@@ -36,12 +44,17 @@
   "railwayLinesSelectorTitle": "Railway Lines",
   "buttons": {
     "planRoute": "Plan Route",
-    "clearRoute": "Clear Route"
+    "clearRoute": "Clear Route",
+    "uploadSign": "Upload Sign",
+    "manageSigns": "Manage Signs"
   },
   "modals": {
     "map": {
       "create": "Create Map"
     },
+    "uploadStationSign": "Upload Station Sign",
+    "manageStationSigns": "Manage Station Signs",
+    "editSignPhoto": "Edit Sign Photo",
     "routePlanner": "Route Planner"
   }
 }

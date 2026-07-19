@@ -14,6 +14,10 @@
       "name": "Nama Peta",
       "country": "Negara",
       "file": "Fail Data Peta"
+    },
+    "uploadStationSign": {
+      "file": "Foto Papan Tanda",
+      "stationCode": "Kod Stesen"
     }
   },
   "items": {
@@ -24,6 +28,10 @@
     "map": {
       "title": "Tiada Peta Ditemui",
       "description": "Belum ada peta kereta api yang tersedia."
+    },
+    "sign": {
+      "title": "Tiada Papan Tanda",
+      "description": "Anda belum memuat naik sebarang papan tanda stesen."
     }
   },
   "misc": {
@@ -36,12 +44,17 @@
   "railwayLinesSelectorTitle": "Laluan Kereta Api",
   "buttons": {
     "planRoute": "Rancang Laluan",
-    "clearRoute": "Bersihkan Laluan"
+    "clearRoute": "Bersihkan Laluan",
+    "uploadSign": "Muat Naik Papan Tanda",
+    "manageSigns": "Urus Papan Tanda"
   },
   "modals": {
     "map": {
       "create": "Cipta Peta"
     },
+    "uploadStationSign": "Muat Naik Papan Tanda Stesen",
+    "manageStationSigns": "Urus Papan Tanda Stesen",
+    "editSignPhoto": "Sunting Foto Papan Tanda",
     "routePlanner": "Perancang Laluan"
   }
 }

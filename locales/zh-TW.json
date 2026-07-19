@@ -14,6 +14,10 @@
       "name": "地圖名稱",
       "country": "國家",
       "file": "地圖資料檔案"
+    },
+    "uploadStationSign": {
+      "file": "站牌照片",
+      "stationCode": "車站代碼"
     }
   },
   "items": {
@@ -24,6 +28,10 @@
     "map": {
       "title": "未找到地圖",
       "description": "尚無可用的鐵路地圖。"
+    },
+    "sign": {
+      "title": "未找到站牌",
+      "description": "您尚未上傳任何站牌照片。"
     }
   },
   "misc": {
@@ -36,12 +44,17 @@
   "railwayLinesSelectorTitle": "鐵路路線",
   "buttons": {
     "planRoute": "規劃路線",
-    "clearRoute": "清除路線"
+    "clearRoute": "清除路線",
+    "uploadSign": "上傳站牌",
+    "manageSigns": "管理站牌"
   },
   "modals": {
     "map": {
       "create": "建立地圖"
     },
+    "uploadStationSign": "上傳站牌",
+    "manageStationSigns": "管理站牌",
+    "editSignPhoto": "編輯站牌照片",
     "routePlanner": "路線規劃器"
   }
 }

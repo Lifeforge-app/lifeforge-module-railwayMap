@@ -1,31 +1,45 @@
-import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useMemo, useState } from 'react'
 
-import { Card, Flex, Scrollbar, SearchInput, Text } from '@lifeforge/ui'
+import {
+  Box,
+  Card,
+  ContextMenu,
+  ContextMenuItem,
+  Flex,
+  Scrollbar,
+  SearchInput,
+  Stack,
+  Text,
+  useModalStore
+} from '@lifeforge/ui'
 
+import ManageStationSignModal from '@/components/modals/ManageStationSignModal'
+import { forgeAPI } from '@/manifest'
 import { useRailwayMapContext } from '@/providers/RailwayMapProvider'
 
 import LineBadge from './components/LineBadge'
-
-function getLineColor(
-  code: string,
-  lines: { code: string; color: string }[]
-): string | undefined {
-  const cleanStationCode = code.split(/\d/)[0].toLowerCase()
-
-  const line = lines.find(l => {
-    const cleanLineCode = l.code.split(/\d/)[0].toLowerCase()
-
-    return (
-      cleanLineCode.startsWith(cleanStationCode) ||
-      cleanStationCode.startsWith(cleanLineCode)
-    )
-  })
-
-  return line?.color
-}
+import { getLineColor } from '@/utils/getLineColor'
 
 function StationsTab() {
   const { map } = useRailwayMapContext()
+  const { open } = useModalStore()
+
+  const signsQuery = useQuery(forgeAPI.signs.list.queryOptions())
+
+  const stationSignMap = useMemo(() => {
+    const signs = signsQuery.data || []
+    const map = new Map<string, typeof signs>()
+
+    for (const s of signs) {
+      const existing = map.get(s.station_code) || []
+
+      existing.push(s)
+      map.set(s.station_code, existing)
+    }
+
+    return map
+  }, [signsQuery.data])
 
   const stations = map.stations || []
   const lines = map.lines || []
@@ -48,26 +62,80 @@ function StationsTab() {
       />
       <Scrollbar>
         <Flex direction="column" gap="sm" mb="lg" pr="sm">
-          {sorted.map(station => (
-            <Card key={station.id}>
-              <Flex align="center" gap="md" justify="between" wrap="wrap">
-                <Text size="lg" weight="medium">
-                  {station.name.replace(/\\n/, ' ')}
-                </Text>
-                {station.codes && station.codes.length > 0 && (
-                  <Flex gap="xs" wrap="wrap">
-                    {station.codes.map(code => (
-                      <LineBadge
-                        key={code}
-                        code={code}
-                        color={getLineColor(code, lines) || '#666'}
-                      />
-                    ))}
+          {sorted.map(station => {
+            const stationCode = station.codes?.[0] || ''
+            const signs = stationSignMap.get(stationCode)
+
+            return (
+              <Card key={station.id}>
+                <Flex align="center" gap="md" justify="between" wrap="wrap">
+                  <Flex flex="1" align="center" gap="md">
+                    {signs && signs.length > 0 && (
+                      <Stack width="auto">
+                        {signs.map(sign => (
+                          <Box
+                            overflow="hidden"
+                            r="sm"
+                            key={sign.id}
+                            width="auto"
+                            height="2.5rem"
+                          >
+                            <img
+                              alt=""
+                              src={
+                                forgeAPI.getMedia({
+                                  collectionId: sign.collectionId,
+                                  recordId: sign.id,
+                                  fieldId: sign.cropped_image
+                                }) || undefined
+                              }
+                              style={{
+                                width: '100%',
+                                height: '100%'
+                              }}
+                            />
+                          </Box>
+                        ))}
+                      </Stack>
+                    )}
+                    <Text
+                      display="block"
+                      whiteSpace="nowrap"
+                      size="xl"
+                      weight="medium"
+                    >
+                      {station.name.replace(/\\n/, ' ')}
+                    </Text>
                   </Flex>
-                )}
-              </Flex>
-            </Card>
-          ))}
+                  <Flex align="center" gap="md">
+                    {station.codes && station.codes.length > 0 && (
+                      <Flex gap="xs" wrap="wrap">
+                        {station.codes.map(code => (
+                          <LineBadge
+                            key={code}
+                            code={code}
+                            color={getLineColor(code, lines)}
+                          />
+                        ))}
+                      </Flex>
+                    )}
+                    <ContextMenu>
+                      <ContextMenuItem
+                        icon="tabler:sign-right"
+                        label="manage signs"
+                        onClick={() =>
+                          open(ManageStationSignModal, {
+                            stationCodes: station.codes || [],
+                            lines
+                          })
+                        }
+                      />
+                    </ContextMenu>
+                  </Flex>
+                </Flex>
+              </Card>
+            )
+          })}
         </Flex>
       </Scrollbar>
     </>

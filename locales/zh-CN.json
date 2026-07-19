@@ -14,6 +14,10 @@
       "name": "地图名称",
       "country": "国家",
       "file": "地图数据文件"
+    },
+    "uploadStationSign": {
+      "file": "站牌照片",
+      "stationCode": "车站代码"
     }
   },
   "items": {
@@ -24,6 +28,10 @@
     "map": {
       "title": "未找到地图",
       "description": "暂无可用的铁路地图。"
+    },
+    "sign": {
+      "title": "未找到站牌",
+      "description": "您尚未上传任何站牌照片。"
     }
   },
   "misc": {
@@ -36,12 +44,17 @@
   "railwayLinesSelectorTitle": "铁路线路",
   "buttons": {
     "planRoute": "规划路线",
-    "clearRoute": "清除路线"
+    "clearRoute": "清除路线",
+    "uploadSign": "上传站牌",
+    "manageSigns": "管理站牌"
   },
   "modals": {
     "map": {
       "create": "创建地图"
     },
+    "uploadStationSign": "上传站牌",
+    "manageStationSigns": "管理站牌",
+    "editSignPhoto": "编辑站牌照片",
     "routePlanner": "路线规划器"
   }
 }

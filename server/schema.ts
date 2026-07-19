@@ -1,5 +1,4 @@
 import z from 'zod'
-
 import { cleanSchemas } from '@lifeforge/pocketbase'
 
 export const schemas = {
@@ -73,6 +72,108 @@ export const schemas = {
           hidden: false,
           maxSize: 0,
           name: 'stations',
+          presentable: false,
+          required: false,
+          system: false,
+          type: 'json'
+        },
+        {
+          hidden: false,
+          name: 'created',
+          onCreate: true,
+          onUpdate: false,
+          presentable: false,
+          system: false,
+          type: 'autodate'
+        },
+        {
+          hidden: false,
+          name: 'updated',
+          onCreate: true,
+          onUpdate: true,
+          presentable: false,
+          system: false,
+          type: 'autodate'
+        }
+      ],
+      indexes: [],
+      system: false
+    }
+  },
+  station_sign_collection: {
+    schema: z.object({
+      image: z.string(),
+      station_code: z.string(),
+      cropped_image: z.string(),
+      crop_coords: z.any(),
+      created: z.string(),
+      updated: z.string()
+    }),
+    raw: {
+      listRule: null,
+      viewRule: null,
+      createRule: null,
+      updateRule: null,
+      deleteRule: null,
+      name: 'railway_map__station_sign_collection',
+      type: 'base',
+      fields: [
+        {
+          autogeneratePattern: '[a-z0-9]{15}',
+          hidden: false,
+          max: 15,
+          min: 15,
+          name: 'id',
+          pattern: '^[a-z0-9]+$',
+          presentable: false,
+          primaryKey: true,
+          required: true,
+          system: true,
+          type: 'text'
+        },
+        {
+          hidden: false,
+          maxSelect: 1,
+          maxSize: 99999999,
+          mimeTypes: [],
+          name: 'image',
+          presentable: false,
+          protected: false,
+          required: false,
+          system: false,
+          thumbs: [],
+          type: 'file'
+        },
+        {
+          autogeneratePattern: '',
+          hidden: false,
+          max: 0,
+          min: 0,
+          name: 'station_code',
+          pattern: '',
+          presentable: false,
+          primaryKey: false,
+          required: false,
+          system: false,
+          type: 'text'
+        },
+        {
+          hidden: false,
+          maxSelect: 1,
+          maxSize: 99999999,
+          mimeTypes: [],
+          name: 'cropped_image',
+          presentable: false,
+          protected: false,
+          required: false,
+          system: false,
+          thumbs: [],
+          type: 'file'
+        },
+        {
+          hidden: false,
+          maxSize: 0,
+          name: 'crop_coords',
           presentable: false,
           required: false,
           system: false,

@@ -6,6 +6,7 @@ import {
   writeContractFileToClient
 } from '@lifeforge/server-utils'
 
+import * as signsRoutes from './routes/signs'
 import schema from './schema'
 
 const forge = createForge(schema)
@@ -120,7 +121,8 @@ export const createMap = forge
 const routes = forgeRouter({
   listMaps,
   getMap,
-  createMap
+  createMap,
+  signs: signsRoutes
 })
 
 writeContractFileToClient(routes, import.meta.dirname)
