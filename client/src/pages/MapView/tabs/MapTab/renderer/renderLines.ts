@@ -8,7 +8,7 @@ function renderLines({
   g,
   lines
 }: {
-  g: d3.Selection<SVGGElement | null, unknown, null, undefined>
+  g: d3.Selection<SVGGElement, unknown, null, undefined>
   lines: MapLine[]
 }) {
   for (let index = 0; index < lines.length; index++) {

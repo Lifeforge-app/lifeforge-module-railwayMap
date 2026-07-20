@@ -19,7 +19,7 @@ function renderStations({
   gRef,
   centerStation
 }: {
-  g: d3.Selection<SVGGElement | null, unknown, null, undefined>
+  g: d3.Selection<SVGGElement, unknown, null, undefined>
   stations: MapStation[]
   lines: MapLine[]
   bgTempPalette: Record<number, string>
