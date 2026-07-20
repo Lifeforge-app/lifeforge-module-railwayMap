@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-import type { MapStation } from '../../../providers/RailwayMapProvider'
+import type { MapStation } from '@/providers/RailwayMapProvider'
 
 function renderStationLabel({
   stationGroup,

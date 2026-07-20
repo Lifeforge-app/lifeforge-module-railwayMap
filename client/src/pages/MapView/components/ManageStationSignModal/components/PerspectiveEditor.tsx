@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 interface Coord {
   x: number
@@ -75,6 +75,8 @@ function validateCoords(coords: Coords, imgW: number, imgH: number): string | nu
 
 export { validateCoords }
 
+const MAGNIFIER_ZOOM = 3
+
 function PerspectiveEditor({
   imageDataUrl,
   imageWidth,
@@ -85,11 +87,29 @@ function PerspectiveEditor({
   const svgRef = useRef<SVGSVGElement>(null)
   const coordsRef = useRef(coords)
   const dimsRef = useRef({ imageWidth, imageHeight })
+  const clipPathId = useRef(`mag-${Math.random().toString(36).slice(2, 8)}`)
+  const [containerWidth, setContainerWidth] = useState(0)
 
   coordsRef.current = coords
   dimsRef.current = { imageWidth, imageHeight }
 
   useEffect(() => {
+    const svg = svgRef.current
+    if (!svg) return
+
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width)
+      }
+    })
+
+    observer.observe(svg.parentElement!)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!containerWidth) return
+
     const svg = d3.select(svgRef.current)
 
     svg.selectAll('*').remove()
@@ -103,14 +123,14 @@ function PerspectiveEditor({
 
     const keys = ['topLeft', 'topRight', 'bottomRight', 'bottomLeft'] as const
 
-    const minDim = Math.min(imageWidth, imageHeight)
-    const s = Math.sqrt(minDim / 800)
-    const radius = Math.max(10, 10 * s)
-    const strokeW = Math.max(2, 2.5 * s)
-    const fontSize = Math.max(11, 14 * s)
+    const scale = containerWidth / imageWidth
+    const tapTarget = 10
+    const radius = Math.max(10, Math.min(tapTarget / scale, 120))
+    const strokeW = Math.max(2, Math.min(3 / scale, 5))
+    const fontSize = Math.max(11, Math.min(16 / scale, 18))
     const labelDx = radius * 2
     const labelDy = -radius * 1.5
-    const labelStrokeW = Math.max(2, 3 * s)
+    const labelStrokeW = Math.max(2, Math.min(3 / scale, 5))
 
     const polygon = g
       .append('polygon')
@@ -128,6 +148,79 @@ function PerspectiveEditor({
     }
 
     updatePolygon()
+
+    const magTargetRadius = 65
+    const magRadius = Math.min(magTargetRadius / scale, 250)
+
+    svg.append('defs')
+      .append('clipPath')
+      .attr('id', clipPathId.current)
+      .append('circle')
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', magRadius)
+
+    const magnifier = svg.append('g').attr('visibility', 'hidden')
+
+    magnifier.append('circle')
+      .attr('r', magRadius)
+      .attr('fill', '#1a1a2e')
+      .attr('opacity', 0.92)
+
+    const magImageGroup = magnifier.append('g')
+      .attr('clip-path', `url(#${clipPathId.current})`)
+
+    const magImage = magImageGroup.append('image')
+      .attr('href', imageDataUrl)
+      .attr('width', imageWidth)
+      .attr('height', imageHeight)
+
+    magnifier.append('circle')
+      .attr('r', magRadius)
+      .attr('fill', 'none')
+      .attr('stroke', '#0078ff')
+      .attr('stroke-width', 2.5)
+
+    const crossLen = Math.max(8, Math.min(12 / scale, 28))
+    const crossDotR = Math.max(2, Math.min(3 / scale, 6))
+    const crossStroke = Math.max(1.5, Math.min(2 / scale, 3.5))
+
+    for (const { x1, y1, x2, y2 } of [
+      { x1: -crossLen, y1: 0, x2: crossLen, y2: 0 },
+      { x1: 0, y1: -crossLen, x2: 0, y2: crossLen }
+    ]) {
+      magnifier.append('line')
+        .attr('x1', x1).attr('y1', y1)
+        .attr('x2', x2).attr('y2', y2)
+        .attr('stroke', '#ffffff')
+        .attr('stroke-width', crossStroke)
+        .attr('stroke-linecap', 'round')
+    }
+
+    magnifier.append('circle')
+      .attr('r', crossDotR)
+      .attr('fill', '#ffffff')
+
+    function updateMagnifier(px: number, py: number) {
+      let dx = magRadius * 0.3
+      let dy = -magRadius * 2.5
+
+      if (px > imageWidth * 0.5) {
+        dx = -magRadius * 2.2
+      }
+
+      const mx = px + dx
+      const my = py + dy
+
+      magnifier
+        .attr('transform', `translate(${mx}, ${my})`)
+        .attr('visibility', 'visible')
+
+      magImage.attr(
+        'transform',
+        `translate(${-px * MAGNIFIER_ZOOM}, ${-py * MAGNIFIER_ZOOM}) scale(${MAGNIFIER_ZOOM})`
+      )
+    }
 
     keys.forEach(key => {
       const circle = g
@@ -153,6 +246,12 @@ function PerspectiveEditor({
 
       const drag = d3
         .drag<SVGCircleElement, unknown>()
+        .on('start', function () {
+          const cx = parseFloat(d3.select(this).attr('cx'))
+          const cy = parseFloat(d3.select(this).attr('cy'))
+          updateMagnifier(cx, cy)
+          magnifier.attr('visibility', 'visible')
+        })
         .on('drag', function (event) {
           const { imageWidth: w, imageHeight: h } = dimsRef.current
 
@@ -173,6 +272,10 @@ function PerspectiveEditor({
             .text(`${Math.round(newX)}, ${Math.round(newY)}`)
 
           updatePolygon()
+          updateMagnifier(newX, newY)
+        })
+        .on('end', function () {
+          magnifier.attr('visibility', 'hidden')
         })
 
       circle.call(drag as never)
@@ -181,7 +284,7 @@ function PerspectiveEditor({
     return () => {
       svg.selectAll('*').remove()
     }
-  }, [imageDataUrl])
+  }, [imageDataUrl, containerWidth])
 
   return (
     <svg

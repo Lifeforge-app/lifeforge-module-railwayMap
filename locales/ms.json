@@ -15,6 +15,7 @@
       "country": "Negara",
       "file": "Fail Data Peta"
     },
+    "stationName": "Nama Stesen",
     "uploadStationSign": {
       "file": "Foto Papan Tanda",
       "stationCode": "Kod Stesen"
@@ -52,6 +53,7 @@
     "map": {
       "create": "Cipta Peta"
     },
+    "editStationName": "Sunting Nama Stesen",
     "uploadStationSign": "Muat Naik Papan Tanda Stesen",
     "manageStationSigns": "Urus Papan Tanda Stesen",
     "editSignPhoto": "Sunting Foto Papan Tanda",

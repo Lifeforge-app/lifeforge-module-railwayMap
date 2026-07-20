@@ -15,6 +15,7 @@
       "country": "国家",
       "file": "地图数据文件"
     },
+    "stationName": "车站名称",
     "uploadStationSign": {
       "file": "站牌照片",
       "stationCode": "车站代码"
@@ -52,6 +53,7 @@
     "map": {
       "create": "创建地图"
     },
+    "editStationName": "编辑车站名称",
     "uploadStationSign": "上传站牌",
     "manageStationSigns": "管理站牌",
     "editSignPhoto": "编辑站牌照片",

@@ -1,5 +1,7 @@
 import * as d3 from 'd3'
-import type { MapLine } from '../../../providers/RailwayMapProvider'
+
+import type { MapLine } from '@/providers/RailwayMapProvider'
+
 import roundedPolygon from './roundedPolygon'
 
 function renderLines({

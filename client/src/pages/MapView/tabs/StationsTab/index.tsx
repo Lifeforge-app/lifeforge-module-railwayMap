@@ -2,28 +2,22 @@ import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 
 import {
-  Box,
-  Card,
-  ContextMenu,
-  ContextMenuItem,
   Flex,
+  Listbox,
+  ListboxOption,
   Scrollbar,
   SearchInput,
-  Stack,
-  Text,
-  useModalStore
+  Text
 } from '@lifeforge/ui'
 
-import ManageStationSignModal from '@/components/modals/ManageStationSignModal'
 import { forgeAPI } from '@/manifest'
 import { useRailwayMapContext } from '@/providers/RailwayMapProvider'
 
-import LineBadge from './components/LineBadge'
-import { getLineColor } from '@/utils/getLineColor'
+import LineBadge from '../../components/LineBadge'
+import StationItem from './components/SignItem'
 
 function StationsTab() {
   const { map } = useRailwayMapContext()
-  const { open } = useModalStore()
 
   const signsQuery = useQuery(forgeAPI.signs.list.queryOptions())
 
@@ -45,97 +39,76 @@ function StationsTab() {
   const lines = map.lines || []
 
   const [query, setQuery] = useState('')
+  const [lineFilter, setLineFilter] = useState<string | null>(null)
 
   const sorted = [...stations]
     .sort((a, b) => a.name.localeCompare(b.name))
     .filter(
-      s => query === '' || s.name.toLowerCase().includes(query.toLowerCase())
+      s =>
+        (query === '' ||
+          s.name
+            .replace(/\n/g, ' ')
+            .toLowerCase()
+            .includes(query.toLowerCase())) &&
+        (lineFilter === null || s.lines.includes(lineFilter))
     )
 
   return (
     <>
-      <SearchInput
-        mb="lg"
-        searchTarget="station"
-        value={query}
-        onChange={setQuery}
-      />
-      <Scrollbar>
-        <Flex direction="column" gap="sm" mb="lg" pr="sm">
-          {sorted.map(station => {
-            const stationCode = station.codes?.[0] || ''
-            const signs = stationSignMap.get(stationCode)
+      <Flex direction={{ base: 'column', md: 'row' }} gap="md">
+        <Listbox
+          minWidth="20em"
+          value={lineFilter}
+          onChange={setLineFilter}
+          renderContent={value => {
+            if (value === null) {
+              return <Text truncate>All Lines</Text>
+            }
+
+            const line = lines.find(l => l.code === value)
 
             return (
-              <Card key={station.id}>
-                <Flex align="center" gap="md" justify="between" wrap="wrap">
-                  <Flex flex="1" align="center" gap="md">
-                    {signs && signs.length > 0 && (
-                      <Stack width="auto">
-                        {signs.map(sign => (
-                          <Box
-                            overflow="hidden"
-                            r="sm"
-                            key={sign.id}
-                            width="auto"
-                            height="2.5rem"
-                          >
-                            <img
-                              alt=""
-                              src={
-                                forgeAPI.getMedia({
-                                  collectionId: sign.collectionId,
-                                  recordId: sign.id,
-                                  fieldId: sign.cropped_image
-                                }) || undefined
-                              }
-                              style={{
-                                width: '100%',
-                                height: '100%'
-                              }}
-                            />
-                          </Box>
-                        ))}
-                      </Stack>
-                    )}
-                    <Text
-                      display="block"
-                      whiteSpace="nowrap"
-                      size="xl"
-                      weight="medium"
-                    >
-                      {station.name.replace(/\\n/, ' ')}
-                    </Text>
-                  </Flex>
-                  <Flex align="center" gap="md">
-                    {station.codes && station.codes.length > 0 && (
-                      <Flex gap="xs" wrap="wrap">
-                        {station.codes.map(code => (
-                          <LineBadge
-                            key={code}
-                            code={code}
-                            color={getLineColor(code, lines)}
-                          />
-                        ))}
-                      </Flex>
-                    )}
-                    <ContextMenu>
-                      <ContextMenuItem
-                        icon="tabler:sign-right"
-                        label="manage signs"
-                        onClick={() =>
-                          open(ManageStationSignModal, {
-                            stationCodes: station.codes || [],
-                            lines
-                          })
-                        }
-                      />
-                    </ContextMenu>
-                  </Flex>
-                </Flex>
-              </Card>
+              <Flex minWidth="0" gap="md" centered>
+                <LineBadge code={value} color={line?.color ?? '#888'} />
+                <Text truncate align="left">
+                  {line?.name}
+                </Text>
+              </Flex>
             )
-          })}
+          }}
+        >
+          <ListboxOption value={null} label="All Lines" />
+          {lines.map(line => (
+            <ListboxOption
+              key={line.code}
+              value={line.code}
+              label={line.name}
+              renderColorAndIcon={() => (
+                <Flex centered width="5em">
+                  <LineBadge code={line.code} color={line.color} />
+                </Flex>
+              )}
+            />
+          ))}
+        </Listbox>
+        <SearchInput
+          mb="lg"
+          searchTarget="station"
+          value={query}
+          onChange={setQuery}
+        />
+      </Flex>
+      <Scrollbar>
+        <Flex direction="column" gap="sm" mb="lg" pr="sm">
+          {sorted.map(station => (
+            <StationItem
+              key={station.id}
+              station={station}
+              stationSignMap={stationSignMap}
+              lines={lines}
+              mapId={map.id}
+            />
+          ))}
         </Flex>
       </Scrollbar>
     </>

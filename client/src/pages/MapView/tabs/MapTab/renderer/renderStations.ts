@@ -1,10 +1,11 @@
 import * as d3 from 'd3'
 import tinycolor from 'tinycolor2'
 
-import type { MapLine, MapStation } from '../../../providers/RailwayMapProvider'
+import type { MapLine, MapStation } from '@/providers/RailwayMapProvider'
+
+import { centerMapOnStation } from '../utils/zoomUtils'
 import getBoxPath from './getBoxPath'
 import renderStationLabel from './renderStationLabel'
-import { centerMapOnStation } from '../utils/zoomUtils'
 
 function renderStations({
   g,
@@ -70,7 +71,14 @@ function renderStations({
           )
         )
         .attr('fill', 'none')
-        .attr('stroke', isSelected ? (darkMode ? '#ffffff' : '#000000') : bgTempPalette[darkMode ? 900 : 100])
+        .attr(
+          'stroke',
+          isSelected
+            ? darkMode
+              ? '#ffffff'
+              : '#000000'
+            : bgTempPalette[darkMode ? 900 : 100]
+        )
         .attr('stroke-width', isSelected ? 4 : 2)
         .attr('stroke-linejoin', 'round')
 
@@ -87,8 +95,7 @@ function renderStations({
             cleanStationCode.startsWith(cleanLineCode)
           )
         })
-        const color =
-          line?.color || bgTempPalette[darkMode ? 100 : 800]
+        const color = line?.color || bgTempPalette[darkMode ? 100 : 800]
         const isDarkColor = line ? tinycolor(color).isDark() : false
         const textColor = isDarkColor ? '#ffffff' : '#000000'
 
@@ -139,8 +146,7 @@ function renderStations({
             cleanStationCode.startsWith(cleanLineCode)
           )
         })
-      const lineColor =
-        line?.color || bgTempPalette[darkMode ? 100 : 800]
+      const lineColor = line?.color || bgTempPalette[darkMode ? 100 : 800]
       const isDarkLine = line ? tinycolor(lineColor).isDark() : false
 
       const boxWidth = Math.max(14, textVal.length * 4.2 + 8)
@@ -160,7 +166,14 @@ function renderStations({
           )
         )
         .attr('fill', lineColor)
-        .attr('stroke', isSelected ? (darkMode ? '#ffffff' : '#000000') : bgTempPalette[darkMode ? 900 : 100])
+        .attr(
+          'stroke',
+          isSelected
+            ? darkMode
+              ? '#ffffff'
+              : '#000000'
+            : bgTempPalette[darkMode ? 900 : 100]
+        )
         .attr('stroke-width', isSelected ? 2.5 : 1)
         .attr('stroke-linejoin', 'round')
 

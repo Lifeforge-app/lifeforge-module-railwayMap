@@ -16,7 +16,7 @@ import {
 } from '@lifeforge/ui'
 
 import { forgeAPI } from '@/manifest'
-import LineBadge from '@/pages/MapView/tabs/StationsTab/components/LineBadge'
+import LineBadge from '@/pages/MapView/components/LineBadge'
 import { getLineColor } from '@/utils/getLineColor'
 
 import PerspectiveEditor, {

@@ -15,6 +15,7 @@
       "country": "Country",
       "file": "Map Data File"
     },
+    "stationName": "Station Name",
     "uploadStationSign": {
       "file": "Sign Photo",
       "stationCode": "Station Code"
@@ -52,6 +53,7 @@
     "map": {
       "create": "Create Map"
     },
+    "editStationName": "Edit Station Name",
     "uploadStationSign": "Upload Station Sign",
     "manageStationSigns": "Manage Station Signs",
     "editSignPhoto": "Edit Sign Photo",

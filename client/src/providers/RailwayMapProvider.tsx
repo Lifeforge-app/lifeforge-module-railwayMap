@@ -7,7 +7,7 @@ import { WithQuery } from '@lifeforge/ui'
 
 import { forgeAPI } from '@/manifest'
 
-type MapData = InferOutput<typeof forgeAPI.getMap>
+type MapData = InferOutput<typeof forgeAPI.maps.get>
 type MapLine = MapData['lines'][number]
 type MapStation = MapData['stations'][number]
 
@@ -34,7 +34,7 @@ export default function RailwayMapProvider({
   const { id } = useParams<{ id: string }>()
 
   const mapQuery = useQuery(
-    forgeAPI.getMap.input({ id: id! }).queryOptions({ enabled: !!id })
+    forgeAPI.maps.get.input({ id: id! }).queryOptions({ enabled: !!id })
   )
 
   const [selectedStation, setSelectedStation] = useState<MapStation | null>(

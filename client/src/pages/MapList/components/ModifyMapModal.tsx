@@ -67,9 +67,9 @@ function ModifyMapModal({ onClose }: { onClose: () => void }) {
   })
 
   const createMutation = useMutation(
-    forgeAPI.createMap.mutationOptions({
+    forgeAPI.maps.create.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: forgeAPI.listMaps.key })
+        queryClient.invalidateQueries({ queryKey: forgeAPI.maps.list.key })
         toast.success('Map created successfully')
       },
       onError: () => {
