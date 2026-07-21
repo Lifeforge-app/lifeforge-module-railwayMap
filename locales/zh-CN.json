@@ -1,6 +1,10 @@
 {
   "title": "铁路之旅",
   "description": "点燃你的铁路狂热。任何网络，任何国家。",
+  "viewModes": {
+    "list": "列表",
+    "grid": "网格"
+  },
   "viewTypes": {
     "routeMap": "路线图",
     "earthMap": "地球地图",
@@ -36,11 +40,17 @@
     }
   },
   "misc": {
+    "allLines": "所有线路",
     "counts": "{{lineCount}} 条线路，{{stationCount}} 个车站"
   },
   "tabs": {
     "map": "地图",
     "stations": "车站"
+  },
+  "sortTypes": {
+    "sortBy": "排序方式",
+    "name": "名称",
+    "stationCode": "车站代码"
   },
   "railwayLinesSelectorTitle": "铁路线路",
   "buttons": {

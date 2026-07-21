@@ -1,6 +1,10 @@
 {
   "title": "Railway Journey",
   "description": "Fuel your railway fever. Any network, any country.",
+  "viewModes": {
+    "list": "List",
+    "grid": "Grid"
+  },
   "viewTypes": {
     "routeMap": "Route Map",
     "earthMap": "Earth Map",
@@ -36,11 +40,17 @@
     }
   },
   "misc": {
+    "allLines": "All Lines",
     "counts": "{{lineCount}} lines, {{stationCount}} stations"
   },
   "tabs": {
     "map": "Map",
     "stations": "Stations"
+  },
+  "sortTypes": {
+    "sortBy": "Sort By",
+    "name": "Name",
+    "stationCode": "Station Code"
   },
   "railwayLinesSelectorTitle": "Railway Lines",
   "buttons": {

@@ -1,6 +1,10 @@
 {
   "title": "Perjalanan Kereta Api",
   "description": "Semarakkan demam kereta api anda. Mana-mana rangkaian, mana-mana negara.",
+  "viewModes": {
+    "list": "Senarai",
+    "grid": "Grid"
+  },
   "viewTypes": {
     "routeMap": "Peta Laluan",
     "earthMap": "Peta Bumi",
@@ -36,11 +40,17 @@
     }
   },
   "misc": {
+    "allLines": "Semua Laluan",
     "counts": "{{lineCount}} laluan, {{stationCount}} stesen"
   },
   "tabs": {
     "map": "Peta",
     "stations": "Stesen"
+  },
+  "sortTypes": {
+    "sortBy": "Susun Mengikut",
+    "name": "Nama",
+    "stationCode": "Kod Stesen"
   },
   "railwayLinesSelectorTitle": "Laluan Kereta Api",
   "buttons": {

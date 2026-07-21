@@ -8,7 +8,7 @@ function GridView({ stations }: { stations: MapStation[] }) {
   return (
     <Grid
       as="ul"
-      gap="md"
+      gap="sm"
       mb="lg"
       pr="sm"
       templateCols={{

@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { createContext, useContext, useMemo } from 'react'
 
+import type { InferOutput } from '@lifeforge/api'
+
 import { forgeAPI } from '@/manifest'
 import { useRailwayMapContext } from '@/providers/RailwayMapProvider'
 
@@ -10,11 +12,7 @@ interface StationsTabContextValue {
   mapId: string
 }
 
-type MapStationSign = NonNullable<
-  ReturnType<typeof forgeAPI.signs.list.queryOptions>['queryKey']
->[number] extends infer T
-  ? T
-  : never
+type MapStationSign = InferOutput<typeof forgeAPI.signs.list>[number]
 
 const StationsTabContext = createContext<StationsTabContextValue | null>(null)
 
@@ -24,7 +22,6 @@ export function StationsTabProvider({
   children: React.ReactNode
 }) {
   const { map } = useRailwayMapContext()
-
   const signsQuery = useQuery(forgeAPI.signs.list.queryOptions())
 
   const stationSignMap = useMemo(() => {
@@ -44,9 +41,7 @@ export function StationsTabProvider({
   const mapId = map.id
 
   return (
-    <StationsTabContext
-      value={{ stationSignMap, lines, mapId }}
-    >
+    <StationsTabContext value={{ stationSignMap, lines, mapId }}>
       {children}
     </StationsTabContext>
   )
@@ -54,10 +49,12 @@ export function StationsTabProvider({
 
 export function useStationsTabContext() {
   const ctx = useContext(StationsTabContext)
+
   if (!ctx) {
     throw new Error(
       'useStationsTabContext must be used within a StationsTabProvider'
     )
   }
+
   return ctx
 }

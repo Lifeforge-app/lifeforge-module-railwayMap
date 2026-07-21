@@ -1,6 +1,7 @@
 import { Flex, type FlexProps } from '@lifeforge/ui'
 
 import { getLineColor } from '@/utils/getLineColor'
+import { filterStationCode } from '@/utils/filterStationCode'
 
 import LineBadge from '../../../components/LineBadge'
 
@@ -20,19 +21,13 @@ function StationCodes({
   if (!codes || codes.length === 0) return null
 
   const filtered = lineFilter
-    ? codes.filter(code => {
-        const cleanCode = code.split(/\d/)[0].toLowerCase()
-        const cleanFilter = lineFilter.split(/\d/)[0].toLowerCase()
-        return (
-          cleanCode.startsWith(cleanFilter) || cleanFilter.startsWith(cleanCode)
-        )
-      })
+    ? filterStationCode(codes, lineFilter)
     : codes
 
   if (filtered.length === 0) return null
 
   return (
-    <Flex gap="xs" wrap={wrap ? 'wrap' : undefined} display={display}>
+    <Flex display={display} gap="xs" wrap={wrap ? 'wrap' : undefined}>
       {filtered.map(code => (
         <LineBadge key={code} code={code} color={getLineColor(code, lines)} />
       ))}

@@ -11,35 +11,33 @@ import {
 import EditStationNameModal from '@/pages/MapView/components/EditStationNameModal'
 import ManageStationSignModal from '@/pages/MapView/components/ManageStationSignModal'
 import type { MapStation } from '@/providers/RailwayMapProvider'
-import useFilter from '../../hooks/useFilter'
+import { filterStationCode } from '@/utils/filterStationCode'
 
 import SignImages from '../../components/SignImages'
 import StationCodes from '../../components/StationCodes'
 import { useStationsTabContext } from '../../contexts/StationsTabContext'
+import useFilter from '../../hooks/useFilter'
 
 function StationGridItem({ station }: { station: MapStation }) {
   const { open } = useModalStore()
   const { stationSignMap, lines, mapId } = useStationsTabContext()
   const { line: lineFilter } = useFilter()
 
-  const signs = (station.codes ?? []).flatMap(code =>
-    (stationSignMap.get(code) ?? []).filter(s => {
-      if (!lineFilter) return true
-
-      const cleanCode = s.station_code.split(/\d/)[0].toLowerCase()
-      const cleanFilter = lineFilter.toLowerCase()
-      return (
-        cleanCode.startsWith(cleanFilter) || cleanFilter.startsWith(cleanCode)
-      )
-    })
+  const signs = filterStationCode(station.codes || [], lineFilter).flatMap(
+    code => stationSignMap.get(code) ?? []
   )
 
   return (
-    <Card as="li" direction="column" minWidth="0" gap="sm">
-      <Flex minWidth="0" align="center" gap="md" justify="between">
-        <Stack>
-          <StationCodes codes={station.codes} lines={lines} wrap lineFilter={lineFilter} />
-          <Text truncate display="block" size="lg" weight="medium">
+    <Card as="li" direction="column" gap="sm" minWidth="0">
+      <Flex align="center" gap="md" justify="between" minWidth="0">
+        <Stack gap="md">
+          <StationCodes
+            wrap
+            codes={station.codes}
+            lineFilter={lineFilter}
+            lines={lines}
+          />
+          <Text truncate display="block" size="xl" weight="medium">
             {station.name.replace(/\\n/g, ' ')}
           </Text>
         </Stack>
@@ -66,7 +64,7 @@ function StationGridItem({ station }: { station: MapStation }) {
           />
         </ContextMenu>
       </Flex>
-      {signs.length > 0 && <SignImages signs={signs} lines={lines} mt="sm" />}
+      {signs.length > 0 && <SignImages lines={lines} mt="sm" signs={signs} />}
     </Card>
   )
 }

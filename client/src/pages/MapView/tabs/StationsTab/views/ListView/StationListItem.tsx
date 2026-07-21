@@ -10,52 +10,45 @@ import {
 import EditStationNameModal from '@/pages/MapView/components/EditStationNameModal'
 import ManageStationSignModal from '@/pages/MapView/components/ManageStationSignModal'
 import type { MapStation } from '@/providers/RailwayMapProvider'
-import useFilter from '../../hooks/useFilter'
-import { useStationsTabContext } from '../../contexts/StationsTabContext'
+import { filterStationCode } from '@/utils/filterStationCode'
+
 import SignImages from '../../components/SignImages'
 import StationCodes from '../../components/StationCodes'
+import { useStationsTabContext } from '../../contexts/StationsTabContext'
+import useFilter from '../../hooks/useFilter'
 
 function StationListItem({ station }: { station: MapStation }) {
   const { open } = useModalStore()
   const { stationSignMap, lines, mapId } = useStationsTabContext()
   const { line: lineFilter } = useFilter()
 
-  const signs = (station.codes ?? []).flatMap(
-    code =>
-      (stationSignMap.get(code) ?? []).filter(s => {
-        if (!lineFilter) return true
-
-        const cleanCode = s.station_code.split(/\d/)[0].toLowerCase()
-        const cleanFilter = lineFilter.toLowerCase()
-        return (
-          cleanCode.startsWith(cleanFilter) || cleanFilter.startsWith(cleanCode)
-        )
-      })
+  const signs = filterStationCode(station.codes || [], lineFilter).flatMap(
+    code => stationSignMap.get(code) ?? []
   )
 
   return (
     <Card key={station.id}>
-      <Flex minWidth="0" align="center" gap="md" justify="between">
+      <Flex align="center" gap="md" justify="between" minWidth="0">
         <Flex
-          direction={{ base: 'column', md: 'row' }}
-          minWidth="0"
-          flex="1"
           align={{ base: 'start', md: 'center' }}
+          direction={{ base: 'column', md: 'row' }}
+          flex="1"
           gap="md"
+          minWidth="0"
         >
           {signs.length > 0 && (
             <SignImages
               hasMaxWidth
-              signs={signs}
-              lines={lines}
               display={{ md: 'flex', base: 'none' }}
+              lines={lines}
+              signs={signs}
             />
           )}
           <StationCodes
-            display={{ base: 'flex', md: 'none' }}
             codes={station.codes}
-            lines={lines}
+            display={{ base: 'flex', md: 'none' }}
             lineFilter={lineFilter}
+            lines={lines}
           />
           <Text truncate display="block" size="xl" weight="medium">
             {station.name.replace(/\\n/g, ' ')}
@@ -63,10 +56,10 @@ function StationListItem({ station }: { station: MapStation }) {
         </Flex>
         <Flex align="center" gap="md">
           <StationCodes
-            display={{ base: 'none', md: 'flex' }}
             codes={station.codes}
-            lines={lines}
+            display={{ base: 'none', md: 'flex' }}
             lineFilter={lineFilter}
+            lines={lines}
           />
           <ContextMenu>
             <ContextMenuItem
@@ -94,10 +87,10 @@ function StationListItem({ station }: { station: MapStation }) {
       </Flex>
       {signs.length > 0 && (
         <SignImages
-          signs={signs}
+          display={{ md: 'none', base: 'flex' }}
           lines={lines}
           mt="md"
-          display={{ md: 'none', base: 'flex' }}
+          signs={signs}
         />
       )}
     </Card>
