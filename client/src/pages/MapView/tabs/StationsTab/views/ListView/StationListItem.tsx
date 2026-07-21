@@ -1,4 +1,3 @@
-import type { InferOutput } from '@lifeforge/api'
 import {
   Card,
   ContextMenu,
@@ -8,31 +7,30 @@ import {
   useModalStore
 } from '@lifeforge/ui'
 
-import { forgeAPI } from '@/manifest'
 import EditStationNameModal from '@/pages/MapView/components/EditStationNameModal'
 import ManageStationSignModal from '@/pages/MapView/components/ManageStationSignModal'
 import type { MapStation } from '@/providers/RailwayMapProvider'
+import useFilter from '../../hooks/useFilter'
+import { useStationsTabContext } from '../../contexts/StationsTabContext'
+import SignImages from '../../components/SignImages'
+import StationCodes from '../../components/StationCodes'
 
-import SignImages from './components/SignImages'
-import StationCodes from './components/StationCodes'
-
-type StationSign = InferOutput<typeof forgeAPI.signs.list>[number]
-
-function StationItem({
-  station,
-  stationSignMap,
-  lines,
-  mapId
-}: {
-  station: MapStation
-  stationSignMap: Map<string, StationSign[]>
-  lines: { code: string; color: string }[]
-  mapId: string
-}) {
+function StationListItem({ station }: { station: MapStation }) {
   const { open } = useModalStore()
+  const { stationSignMap, lines, mapId } = useStationsTabContext()
+  const { line: lineFilter } = useFilter()
 
   const signs = (station.codes ?? []).flatMap(
-    code => stationSignMap.get(code) ?? []
+    code =>
+      (stationSignMap.get(code) ?? []).filter(s => {
+        if (!lineFilter) return true
+
+        const cleanCode = s.station_code.split(/\d/)[0].toLowerCase()
+        const cleanFilter = lineFilter.toLowerCase()
+        return (
+          cleanCode.startsWith(cleanFilter) || cleanFilter.startsWith(cleanCode)
+        )
+      })
   )
 
   return (
@@ -57,6 +55,7 @@ function StationItem({
             display={{ base: 'flex', md: 'none' }}
             codes={station.codes}
             lines={lines}
+            lineFilter={lineFilter}
           />
           <Text truncate display="block" size="xl" weight="medium">
             {station.name.replace(/\\n/g, ' ')}
@@ -67,6 +66,7 @@ function StationItem({
             display={{ base: 'none', md: 'flex' }}
             codes={station.codes}
             lines={lines}
+            lineFilter={lineFilter}
           />
           <ContextMenu>
             <ContextMenuItem
@@ -104,4 +104,4 @@ function StationItem({
   )
 }
 
-export default StationItem
+export default StationListItem

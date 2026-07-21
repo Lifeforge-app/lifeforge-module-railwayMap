@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import {
   Flex,
@@ -7,61 +6,69 @@ import {
   ListboxOption,
   Scrollbar,
   SearchInput,
-  Text
+  Text,
+  createViewMode
 } from '@lifeforge/ui'
 
-import { forgeAPI } from '@/manifest'
 import { useRailwayMapContext } from '@/providers/RailwayMapProvider'
+import useFilter from './hooks/useFilter'
 
 import LineBadge from '../../components/LineBadge'
-import StationItem from './components/SignItem'
+import {
+  StationsTabProvider,
+  useStationsTabContext
+} from './contexts/StationsTabContext'
+import GridView from './views/GridView'
+import ListView from './views/ListView'
 
-function StationsTab() {
+export const ViewMode = createViewMode({
+  modes: [
+    { icon: 'tabler:list', value: 'list' },
+    { icon: 'tabler:grid-dots', value: 'grid' }
+  ]
+})
+
+function StationsTabContent() {
   const { map } = useRailwayMapContext()
+  const { lines } = useStationsTabContext()
+  const { searchQuery, setSearchQuery, line: lineFilter, sort, updateFilter } = useFilter()
 
-  const signsQuery = useQuery(forgeAPI.signs.list.queryOptions())
+  const sorted = useMemo(() => {
+    const stations = map.stations || []
 
-  const stationSignMap = useMemo(() => {
-    const signs = signsQuery.data || []
-    const map = new Map<string, typeof signs>()
-
-    for (const s of signs) {
-      const existing = map.get(s.station_code) || []
-
-      existing.push(s)
-      map.set(s.station_code, existing)
-    }
-
-    return map
-  }, [signsQuery.data])
-
-  const stations = map.stations || []
-  const lines = map.lines || []
-
-  const [query, setQuery] = useState('')
-  const [lineFilter, setLineFilter] = useState<string | null>(null)
-
-  const sorted = [...stations]
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .filter(
-      s =>
-        (query === '' ||
-          s.name
-            .replace(/\n/g, ' ')
-            .toLowerCase()
-            .includes(query.toLowerCase())) &&
-        (lineFilter === null || s.lines.includes(lineFilter))
-    )
+    return [...stations]
+      .sort((a, b) => {
+        if (sort === 'code') {
+          const aCode = a.codes?.[0] ?? ''
+          const bCode = b.codes?.[0] ?? ''
+          const [, aLetters = '', aNumStr = ''] = aCode.match(/^([A-Za-z]+)(\d*)/) ?? []
+          const [, bLetters = '', bNumStr = ''] = bCode.match(/^([A-Za-z]+)(\d*)/) ?? []
+          const letterCompare = aLetters.localeCompare(bLetters)
+          if (letterCompare !== 0) return letterCompare
+          return (parseInt(aNumStr) || 0) - (parseInt(bNumStr) || 0)
+        }
+        return a.name.localeCompare(b.name)
+      })
+      .filter(
+        s =>
+          (searchQuery === '' ||
+            s.name
+              .replace(/\n/g, ' ')
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())) &&
+          (lineFilter === '' || s.lines.includes(lineFilter))
+      )
+  }, [map.stations, searchQuery, lineFilter, sort])
 
   return (
-    <>
-      <Flex direction={{ base: 'column', md: 'row' }} gap="md">
+    <ViewMode.Root>
+      <Flex mb="lg" direction={{ base: 'column', md: 'row' }} gap="md">
         <Listbox
           minWidth="20em"
-          value={lineFilter}
-          onChange={setLineFilter}
+          value={lineFilter || null}
+          onChange={value => updateFilter('line', value ?? '')}
           renderContent={value => {
-            if (value === null) {
+            if (value === null || value === '') {
               return <Text truncate>All Lines</Text>
             }
 
@@ -91,27 +98,39 @@ function StationsTab() {
             />
           ))}
         </Listbox>
+        <Listbox
+          minWidth="12em"
+          value={sort}
+          onChange={value => updateFilter('sort', value)}
+        >
+          <ListboxOption value="name" label="Name" />
+          <ListboxOption value="code" label="Station Code" />
+        </Listbox>
         <SearchInput
-          mb="lg"
+          flex="1"
           searchTarget="station"
-          value={query}
-          onChange={setQuery}
+          value={searchQuery}
+          onChange={setSearchQuery}
         />
+        <ViewMode.Selector />
       </Flex>
       <Scrollbar>
-        <Flex direction="column" gap="sm" mb="lg" pr="sm">
-          {sorted.map(station => (
-            <StationItem
-              key={station.id}
-              station={station}
-              stationSignMap={stationSignMap}
-              lines={lines}
-              mapId={map.id}
-            />
-          ))}
-        </Flex>
+        <ViewMode.When mode="list">
+          <ListView stations={sorted} />
+        </ViewMode.When>
+        <ViewMode.When mode="grid">
+          <GridView stations={sorted} />
+        </ViewMode.When>
       </Scrollbar>
-    </>
+    </ViewMode.Root>
+  )
+}
+
+function StationsTab() {
+  return (
+    <StationsTabProvider>
+      <StationsTabContent />
+    </StationsTabProvider>
   )
 }
 
