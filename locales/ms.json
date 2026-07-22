@@ -57,7 +57,8 @@
     "planRoute": "Rancang Laluan",
     "clearRoute": "Bersihkan Laluan",
     "uploadSign": "Muat Naik Papan Tanda",
-    "manageSigns": "Urus Papan Tanda"
+    "manageSigns": "Urus Papan Tanda",
+    "viewSignCollectionStatus": "Lihat Status Pengumpulan Papan Tanda"
   },
   "modals": {
     "map": {
@@ -67,6 +68,7 @@
     "uploadStationSign": "Muat Naik Papan Tanda Stesen",
     "manageStationSigns": "Urus Papan Tanda Stesen",
     "editSignPhoto": "Sunting Foto Papan Tanda",
-    "routePlanner": "Perancang Laluan"
+    "routePlanner": "Perancang Laluan",
+    "signCollectionStatus": "Status Pengumpulan Papan Tanda"
   }
 }

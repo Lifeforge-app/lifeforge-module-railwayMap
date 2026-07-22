@@ -57,7 +57,8 @@
     "planRoute": "規劃路線",
     "clearRoute": "清除路線",
     "uploadSign": "上傳站牌",
-    "manageSigns": "管理站牌"
+    "manageSigns": "管理站牌",
+    "viewSignCollectionStatus": "查看站牌收集狀態"
   },
   "modals": {
     "map": {
@@ -67,6 +68,7 @@
     "uploadStationSign": "上傳站牌",
     "manageStationSigns": "管理站牌",
     "editSignPhoto": "編輯站牌照片",
-    "routePlanner": "路線規劃器"
+    "routePlanner": "路線規劃器",
+    "signCollectionStatus": "站牌收集狀態"
   }
 }

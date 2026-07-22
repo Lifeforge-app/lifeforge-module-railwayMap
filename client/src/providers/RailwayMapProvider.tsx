@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { createContext, useContext, useRef, useState } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
 import type { InferOutput } from '@lifeforge/api'
-import { WithQuery } from '@lifeforge/ui'
+import { WithQuery, toast } from '@lifeforge/ui'
 
 import { forgeAPI } from '@/manifest'
 
@@ -31,21 +31,27 @@ export default function RailwayMapProvider({
 }: {
   children: React.ReactNode
 }) {
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
-
-  const mapQuery = useQuery(
-    forgeAPI.maps.get.input({ id: id! }).queryOptions({ enabled: !!id })
-  )
+  const routeMapSVGRef = useRef<SVGSVGElement>(null)
+  const routeMapGRef = useRef<SVGGElement>(null)
 
   const [selectedStation, setSelectedStation] = useState<MapStation | null>(
     null
   )
 
-  const routeMapSVGRef = useRef<SVGSVGElement>(null)
-  const routeMapGRef = useRef<SVGGElement>(null)
+  const mapQuery = useQuery(
+    forgeAPI.maps.get.input({ id: id! }).queryOptions({ enabled: !!id })
+  )
 
   return (
-    <WithQuery query={mapQuery}>
+    <WithQuery
+      query={mapQuery}
+      onNotFound={() => {
+        toast.error('Map ID not found')
+        navigate(-1)
+      }}
+    >
       {data => {
         const stations = data.stations
 
