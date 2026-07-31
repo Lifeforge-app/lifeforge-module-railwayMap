@@ -26,7 +26,7 @@ function MapList() {
   return (
     <>
       <ModuleHeader
-        actionButton={
+        trailing={
           <Button
             display={{ base: 'none', md: 'flex' }}
             icon="tabler:plus"
@@ -38,7 +38,6 @@ function MapList() {
             new
           </Button>
         }
-        totalItems={mapsQuery.data?.length}
       />
       <SearchInput
         mb="lg"

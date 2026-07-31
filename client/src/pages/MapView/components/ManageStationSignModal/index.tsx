@@ -28,7 +28,6 @@ function ManageStationSignModal({
   }
 }) {
   const { open } = useModalStore()
-
   const signsQuery = useQuery(forgeAPI.signs.list.queryOptions())
 
   const signs =
@@ -37,7 +36,9 @@ function ManageStationSignModal({
   return (
     <Box minWidth="50vw">
       <ModalHeader
-        headerActions={
+        icon="tabler:sign-right"
+        title="Manage Station Signs"
+        trailing={
           <Button
             icon="tabler:plus"
             variant="plain"
@@ -46,8 +47,6 @@ function ManageStationSignModal({
             }}
           />
         }
-        icon="tabler:sign-right"
-        title="Manage Station Signs"
         onClose={onClose}
       />
       {signs.length > 0 ? (
