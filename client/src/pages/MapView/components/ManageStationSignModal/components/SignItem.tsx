@@ -74,12 +74,12 @@ function SignItem({
       <Box flexShrink="0" overflow="hidden" r="md">
         <img
           alt=""
+          decoding="async"
+          loading="lazy"
           src={
-            forgeAPI.getMedia({
-              collectionId: sign.collectionId,
-              recordId: sign.id,
-              fieldId: sign.cropped_image
-            }) || undefined
+            sign.cropped_image
+              ? forgeAPI.getMedia({ key: sign.cropped_image })
+              : undefined
           }
           style={{
             height: '100%',

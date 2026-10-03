@@ -43,12 +43,12 @@ function SignImages({
           >
             <img
               alt=""
+              decoding="async"
+              loading="lazy"
               src={
-                forgeAPI.getMedia({
-                  collectionId: sign.collectionId,
-                  recordId: sign.id,
-                  fieldId: sign.cropped_image
-                }) || undefined
+                sign.cropped_image
+                  ? forgeAPI.getMedia({ key: sign.cropped_image })
+                  : undefined
               }
               style={{
                 width: '100%',

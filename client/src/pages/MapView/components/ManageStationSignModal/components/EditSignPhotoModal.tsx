@@ -30,13 +30,9 @@ function EditSignPhotoModal({
   const [coords, setCoords] = useState<Coords | null>(null)
 
   useEffect(() => {
-    const imageUrl = forgeAPI.getMedia({
-      collectionId: sign.collectionId,
-      recordId: sign.id,
-      fieldId: sign.image
-    })
+    if (!sign.image) return
 
-    if (!imageUrl) return
+    const imageUrl = forgeAPI.getMedia({ key: sign.image })
 
     fetch(imageUrl)
       .then(res => res.blob())
