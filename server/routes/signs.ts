@@ -251,13 +251,9 @@ export const update = forge
         return response.badRequest('Image is required')
       }
 
-      const existing = await db.query.station_sign_collection.findFirst({
+      const existing = (await db.query.station_sign_collection.findFirst({
         where: { id }
-      })
-
-      if (!existing) {
-        return response.notFound()
-      }
+      }))!
 
       const { croppedBuf, imgW, imgH } = await applyPerspectiveCorrection(
         image.path,
@@ -321,13 +317,9 @@ export const remove = forge
     }
   })
   .callback(async ({ db, query: { id }, core, response }) => {
-    const existing = await db.query.station_sign_collection.findFirst({
+    const existing = (await db.query.station_sign_collection.findFirst({
       where: { id }
-    })
-
-    if (!existing) {
-      return response.notFound()
-    }
+    }))!
 
     if (existing.image) {
       await core.storage.delete(existing.image)

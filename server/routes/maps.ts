@@ -79,11 +79,7 @@ export const get = forge
     }
   })
   .callback(async ({ db, query: { id }, response }) => {
-    const map = await db.query.map.findFirst({ where: { id } })
-
-    if (!map) {
-      return response.notFound()
-    }
+    const map = (await db.query.map.findFirst({ where: { id } }))!
 
     return response.ok(map)
   })
@@ -132,11 +128,7 @@ export const update = forge
   })
   .callback(
     async ({ db, query: { id }, body: { stationId, name }, response }) => {
-      const map = await db.query.map.findFirst({ where: { id } })
-
-      if (!map) {
-        return response.notFound()
-      }
+      const map = (await db.query.map.findFirst({ where: { id } }))!
 
       const stations = map.stations.map(s =>
         s.id === stationId ? { ...s, name } : s
